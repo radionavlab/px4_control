@@ -164,8 +164,9 @@ void PosController(nav_msgs::Odometry Odom,
 	feedForward = m*gz*z_w + m*AccRef;
 	updateErrorPID3(PosPID, feedForward, e_Pos, e_Vel, dt);
 	Fdes = outputPID3(PosPID);
+	//ROS_INFO("fdes= %f  %f  %f",Fdes(0),Fdes(1),Fdes(2));
 
-	//Desired thrust in body frame
+	//Desired thrust in body frame. Outputs thrust as a fraction of max thrust
 	refThrust.data = min(max(Fdes.dot(z_b), 0.0),maxThrust)/maxThrust;
 
 	//Find desired attitude from desired force and yaw angle

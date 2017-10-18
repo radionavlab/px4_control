@@ -25,7 +25,7 @@ StateMachine FSM;
 int threadCount = 0;
 PID_3DOF PosPID;
 PosControlParam ControlParam;
-std::string odomTopic, joyDriver;
+std::string odomTopic, joyDriver, pvaTopic;
 
 int main(int argc, char **argv)
 {
@@ -48,6 +48,7 @@ int main(int argc, char **argv)
   //Get odometry topic and joystick driver
   ros::param::get("/px4_control_node/odomTopic", odomTopic);
   ros::param::get("/px4_control_node/joyDriver", joyDriver);
+  ros::param::get("/px4_control_node/pvaTopic", pvaTopic);
 
   //Create services ------------------------------------------
   ros::ServiceServer PID_srv = n.advertiseService("/px4_control_node/updatePosControlParam", updatePosControlParam);
@@ -58,7 +59,7 @@ int main(int argc, char **argv)
   ros::Subscriber odomSub = n.subscribe(odomTopic, 10, odomCallback);
   ros::Subscriber tfSub = n.subscribe(odomTopic, 10, tfCallback);
   ros::Subscriber joySub = n.subscribe("joy", 10, joyCallback);
-  ros::Subscriber PvaSub = n.subscribe("/px4_control/PVA_Ref", 10, PVACallback);
+  ros::Subscriber PvaSub = n.subscribe(pvaTopic, 10, PVACallback);
 
   //Threads --------------------------------------------------
   pthread_t h_FSMThread;      //Finite state machine

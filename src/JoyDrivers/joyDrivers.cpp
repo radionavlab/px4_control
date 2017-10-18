@@ -173,6 +173,7 @@ PVA_structure filterJoy(PVA_structure PVA_ref,
 	PVA_ref_new.Pos.pose.position = SetPoint(Xk1_x[0], Xk1_y[0], Xk1_z[0]);
 	PVA_ref_new.Vel.twist.linear  = SetVector3(Xk1_x[1], Xk1_y[1], Xk1_z[1]);
 	PVA_ref_new.Acc.accel.linear  = SetVector3(Xk1_x[2], Xk1_y[2], Xk1_z[2]);
+	//ROS_INFO("%f %f %f",Xk1_x[0], Xk1_y[0], Xk1_z[0]);
 
 	return PVA_ref_new;
 

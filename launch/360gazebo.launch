@@ -22,6 +22,9 @@
          joyXboxOne  /  joyXbox360  /  joyXbox360Wired -->
     <param name="joyDriver" value="joyXbox360Wired"/>
 
+        <!-- Name of topic to use when handling PVA_References-->
+    <param name="pvaTopic" value="PVA_Ref"/>
+
     <!-- Position Control parameters -->
     <param name="mass" value="1.535"/>       <!-- kg -->
     <param name="gz" value="9.81"/>          <!-- m/s^2 -->
