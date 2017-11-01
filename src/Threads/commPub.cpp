@@ -36,14 +36,22 @@ ROS_INFO("Command Publisher started!");
 	PosControlParam localParam;
 	std_msgs::Float64 refThrust;
 	geometry_msgs::PoseStamped  PoseRef;
+	bool pvaProcessedBool;
+	pvaProcessedBool=true;
+	std::string pvaJoyTopic;
+
+	//note: specified in 360df launch file
+	ros::param::get("/px4_control_node/pvaJoyTopic",pvaJoyTopic);
 
 	//Publishers
 	ros::NodeHandle n; 
 	ros::Publisher PosPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local",100);
     ros::Publisher AttPub = n.advertise<geometry_msgs::PoseStamped>("/mavros/setpoint_attitude/attitude",100);
     ros::Publisher ThrustPub = n.advertise<std_msgs::Float64>("/mavros/setpoint_attitude/att_throttle", 100);
-
-
+	
+	//Self-publisher -------------------------------------------
+  	//NOTE: name is hardcoded for temporary testing, it is best if it publishes to pvaTopic
+  	ros::Publisher joyCallbackPub = n.advertise<px4_control::PVA>(pvaJoyTopic,100);
 
 	ros::Time t_prev = ros::Time::now();
 	ros::Time t_now = ros::Time::now();
@@ -78,6 +86,16 @@ ROS_INFO("Command Publisher started!");
 	    	localOdom = odom;
 	    pthread_mutex_unlock(&mutexes.odom);
 
+	    if(localFSM.State==localFSM.MODE_POSITION_JOY && pvaProcessedBool)
+	    {
+	    	pvaProcessedBool=false;
+	    	px4_control::PVA pvamsg;
+			pvamsg.Pos=PVA_joy.Pos.pose.position;
+			pvamsg.Vel=PVA_joy.Vel.twist.linear;
+			pvamsg.Acc=PVA_joy.Acc.accel.linear;
+			joyCallbackPub.publish(pvamsg);
+	    }
+
 	    //Get reference PVA
 	    if(localFSM.State == localFSM.MODE_POSITION_ROS){
 		    pthread_mutex_lock(&mutexes.PVA_ros);
@@ -86,6 +104,16 @@ ROS_INFO("Command Publisher started!");
 							rpy2quat(SetVector3(0, 0, PVA_Ros.yaw));
 		    	localPVA_ref.Vel.twist.linear = PVA_Ros.Vel;
 		    	localPVA_ref.Acc.accel.linear = PVA_Ros.Acc;
+		    pthread_mutex_unlock(&mutexes.PVA_ros);
+	    }else if(localFSM.State==localFSM.MODE_POSITION_JOY)
+	    {
+	    	pvaProcessedBool=true;
+	    		    pthread_mutex_lock(&mutexes.PVA_ros);
+		    localPVA_ref.Pos.pose.position = PVA_Ros.Pos;
+		    localPVA_ref.Pos.pose.orientation = 
+					rpy2quat(SetVector3(0, 0, PVA_Ros.yaw));
+		    localPVA_ref.Vel.twist.linear = PVA_Ros.Vel;
+		    localPVA_ref.Acc.accel.linear = PVA_Ros.Acc;
 		    pthread_mutex_unlock(&mutexes.PVA_ros);
 	    }
 	    else{

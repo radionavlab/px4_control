@@ -13,7 +13,7 @@
 
 
 // Global variables
-PVA_structure PVA_ref;        //Joystick references
+PVA_structure PVA_ref, PVA_joy;        //Joystick references
 px4_control::PVA PVA_Ros;     //References from topic
 mavros_msgs::State PX4state;
 nav_msgs::Odometry odom;
@@ -25,7 +25,7 @@ StateMachine FSM;
 int threadCount = 0;
 PID_3DOF PosPID;
 PosControlParam ControlParam;
-std::string odomTopic, joyDriver, pvaTopic;
+std::string odomTopic, joyDriver, pvaTopic, pvaJoyTopic;
 
 int main(int argc, char **argv)
 {

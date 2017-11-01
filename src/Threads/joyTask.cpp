@@ -176,8 +176,8 @@ void *joyTask(void *threadID){
 			pthread_mutex_lock(&mutexes.PVAref);
 				PVA_ref = filterJoy(PVA_ref, Vel_ref, dt.toSec(), PosRefTimeConstant);
 				PVA_ref.Pos.pose.orientation = rpy2quat(RPY_ref);
+				PVA_joy = PVA_ref;
 			pthread_mutex_unlock(&mutexes.PVAref);
-
 		}
 		else if(localFSM.State == localFSM.MODE_ATTITUDE){
 			RPY_ref.x = -RollMax*localJoy.RstickHor;

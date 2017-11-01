@@ -11,7 +11,7 @@
 #include "structs.h"
 
 // All global variables within the code
-extern PVA_structure PVA_ref;
+extern PVA_structure PVA_ref, PVA_joy;
 extern mavros_msgs::State PX4state;
 extern nav_msgs::Odometry odom;
 extern joyStruct joy;

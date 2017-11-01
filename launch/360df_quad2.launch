@@ -25,6 +25,7 @@
 
     <!-- Name of topic to use when handling PVA_References-->
     <param name="pvaTopic" value="/px4_control/PVA_Ref"/>
+    <param name="pvaJoyTopic" value="/derppva"/>
     
     <!-- Position Control parameters -->
     <param name="mass" value="0.7623"/>       <!-- kg -->
@@ -36,9 +37,9 @@
     <param name="kvx" value="3.40"/>  <!--3.7-->
     <param name="kvy" value="3.45"/>
     <param name="kvz" value="2.25"/>  <!--1.9-->
-    <param name="kix" value="0.025"/>
+    <param name="kix" value="0.045"/>
     <param name="kiy" value="0.050"/>
-    <param name="kiz" value="0.035"/>
+    <param name="kiz" value="0.075"/>
     <param name="maxInteg_x" value="1.0"/>
     <param name="maxInteg_y" value="1.0"/>
     <param name="maxInteg_z" value="1.0"/>
