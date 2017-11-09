@@ -82,16 +82,6 @@ ROS_INFO("Command Publisher started!");
 	    	localOdom = odom;
 	    pthread_mutex_unlock(&mutexes.odom);
 
-	    if(localFSM.State==localFSM.MODE_POSITION_JOY && pvaProcessedBool)
-	    {
-	    	pvaProcessedBool=false;
-	    	px4_control::PVA pvamsg;
-			pvamsg.Pos=PVA_joy.Pos.pose.position;
-			pvamsg.Vel=PVA_joy.Vel.twist.linear;
-			pvamsg.Acc=PVA_joy.Acc.accel.linear;
-			joyCallbackPub.publish(pvamsg);
-	    }
-
 	    //Get reference PVA
 	    if(localFSM.State == localFSM.MODE_POSITION_ROS){
 		    pthread_mutex_lock(&mutexes.PVA_ros);
