@@ -1,6 +1,7 @@
 <launch>
   <node pkg="px4_control"
     type="px4_control_node"
+    ns="Valkyrie"
     name="px4_control_node"
     output="screen">
 
@@ -8,37 +9,37 @@
     <param name="RollMax" value="40.0"/>     <!-- degrees -->
     <param name="PitchMax" value="40.0"/>    <!-- degrees -->
     <param name="YawRateMax" value="45.0"/>  <!-- deg/sec -->
-    <param name="maxThrust" value="0.95"/>    <!-- From 0 to 1 -->
+    <param name="maxThrust" value="1.0"/>    <!-- From 0 to 1 -->
 
     <!-- Joystick Position Reference parameters -->
     <param name="xRate" value="0.35"/>       <!-- meters/sec -->
     <param name="yRate" value="0.35"/>       <!-- meters/sec -->
-    <param name="zRate" value="0.2"/>       <!-- meters/sec -->
+    <param name="zRate" value="0.3"/>       <!-- meters/sec -->
     <param name="PosRefTimeConstant" value="0.2"/> <!-- seconds -->
 
     <!-- Topic with odometry information for the vehicle -->
-    <param name="odomTopic" value="/Valkyrie/local_odom"/>
+    <param name="odomTopic" value="/local_odom"/>
 
     <!-- Type of joystick being used. Admitted types are:
          joyXboxOne  /  joyXbox360  /  joyXbox360Wired -->
     <param name="joyDriver" value="joyXbox360Wired"/>
 
     <!-- Name of topic to use when handling PVA_References-->
-    <param name="pvaTopic" value="PVA_Ref"/>
+    <param name="pvaTopic" value="/px4_control/PVA_Ref"/>
     
     <!-- Position Control parameters -->
-    <param name="mass" value="0.7762"/>       <!-- kg -->
+    <param name="mass" value="0.7623"/>       <!-- kg -->
     <param name="gz" value="9.81"/>          <!-- m/s^2 -->
-    <param name="thrustRatio" value="1.6"/>  <!-- maxThrust/Weight -->
-    <param name="kpx" value="3.5"/>
-    <param name="kpy" value="3.5"/>
-    <param name="kpz" value="2.3"/>
-    <param name="kvx" value="2.2"/>
-    <param name="kvy" value="2.2"/>
-    <param name="kvz" value="1.8"/>
-    <param name="kix" value="0.4"/>
-    <param name="kiy" value="0.4"/>
-    <param name="kiz" value="0.4"/>
+    <param name="thrustRatio" value="1.60"/>  <!-- maxThrust/Weight -->
+    <param name="kpx" value="3.35"/>  <!--3.0-->
+    <param name="kpy" value="3.30"/>
+    <param name="kpz" value="2.25"/>  <!--1.9-->
+    <param name="kvx" value="3.40"/>  <!--3.7-->
+    <param name="kvy" value="3.45"/>
+    <param name="kvz" value="2.25"/>  <!--1.9-->
+    <param name="kix" value="0.025"/>
+    <param name="kiy" value="0.050"/>
+    <param name="kiz" value="0.035"/>
     <param name="maxInteg_x" value="1.0"/>
     <param name="maxInteg_y" value="1.0"/>
     <param name="maxInteg_z" value="1.0"/>

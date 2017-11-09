@@ -46,12 +46,8 @@ ROS_INFO("Command Publisher started!");
 	//Publishers
 	ros::NodeHandle n; 
 	ros::Publisher PosPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local",100);
-    ros::Publisher AttPub = n.advertise<geometry_msgs::PoseStamped>("/mavros/setpoint_attitude/attitude",100);
-    ros::Publisher ThrustPub = n.advertise<std_msgs::Float64>("/mavros/setpoint_attitude/att_throttle", 100);
-	
-	//Self-publisher -------------------------------------------
-  	//NOTE: name is hardcoded for temporary testing, it is best if it publishes to pvaTopic
-  	ros::Publisher joyCallbackPub = n.advertise<px4_control::PVA>(pvaJoyTopic,100);
+    ros::Publisher AttPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_attitude/attitude",100);
+    ros::Publisher ThrustPub = n.advertise<std_msgs::Float64>("mavros/setpoint_attitude/att_throttle", 100);
 
 	ros::Time t_prev = ros::Time::now();
 	ros::Time t_now = ros::Time::now();
