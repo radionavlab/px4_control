@@ -71,24 +71,24 @@ void readROSparameterServer(PID_3DOF &PID, PosControlParam &Param){
   Eigen::Vector3d Kp, Ki, Kd, maxInteg; 
 
   //Get system properties
-  ros::param::get("/px4_control_node/mass", mass);
-  ros::param::get("/px4_control_node/gz", gz);
-  ros::param::get("/px4_control_node/thrustRatio", thrustRatio);
+  ros::param::get("px4_control_node/mass", mass);
+  ros::param::get("px4_control_node/gz", gz);
+  ros::param::get("px4_control_node/thrustRatio", thrustRatio);
   initializePosControlParam(Param, mass, gz, thrustRatio);
 
   //Get controller parameters
-  ros::param::get("/px4_control_node/kpx", Kp[0]);
-  ros::param::get("/px4_control_node/kpy", Kp[1]);
-  ros::param::get("/px4_control_node/kpz", Kp[2]);
-  ros::param::get("/px4_control_node/kvx", Kd[0]);
-  ros::param::get("/px4_control_node/kvy", Kd[1]);
-  ros::param::get("/px4_control_node/kvz", Kd[2]);
-  ros::param::get("/px4_control_node/kix", Ki[0]);
-  ros::param::get("/px4_control_node/kiy", Ki[1]);
-  ros::param::get("/px4_control_node/kiz", Ki[2]);
-  ros::param::get("/px4_control_node/maxInteg_x", maxInteg[0]);
-  ros::param::get("/px4_control_node/maxInteg_y", maxInteg[1]);
-  ros::param::get("/px4_control_node/maxInteg_z", maxInteg[2]);
+  ros::param::get("px4_control_node/kpx", Kp[0]);
+  ros::param::get("px4_control_node/kpy", Kp[1]);
+  ros::param::get("px4_control_node/kpz", Kp[2]);
+  ros::param::get("px4_control_node/kvx", Kd[0]);
+  ros::param::get("px4_control_node/kvy", Kd[1]);
+  ros::param::get("px4_control_node/kvz", Kd[2]);
+  ros::param::get("px4_control_node/kix", Ki[0]);
+  ros::param::get("px4_control_node/kiy", Ki[1]);
+  ros::param::get("px4_control_node/kiz", Ki[2]);
+  ros::param::get("px4_control_node/maxInteg_x", maxInteg[0]);
+  ros::param::get("px4_control_node/maxInteg_y", maxInteg[1]);
+  ros::param::get("px4_control_node/maxInteg_z", maxInteg[2]);
   updateControlParamPID3(PID, Kp, Ki, Kd, maxInteg);
 
   //Print all parameter values

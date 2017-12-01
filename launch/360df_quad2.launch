@@ -17,7 +17,7 @@
     <param name="PosRefTimeConstant" value="0.2"/> <!-- seconds -->
 
     <!-- Topic with odometry information for the vehicle -->
-    <param name="odomTopic" value="/Valkyrie/local_odom"/>
+    <param name="odomTopic" value="local_odom"/>
 
     <!-- Type of joystick being used. Admitted types are:
          joyXboxOne  /  joyXbox360  /  joyXbox360Wired -->
@@ -25,20 +25,21 @@
 
     <!-- Name of topic to use when handling PVA_References-->
     <param name="pvaTopic" value="/px4_control/PVA_Ref"/>
+    <param name="pvaJoyTopic" value="/derppva"/>
     
     <!-- Position Control parameters -->
     <param name="mass" value="0.7623"/>       <!-- kg -->
     <param name="gz" value="9.81"/>          <!-- m/s^2 -->
-    <param name="thrustRatio" value="1.65"/>  <!-- maxThrust/Weight -->
-    <param name="kpx" value="3.35"/>  <!--3.0-->
-    <param name="kpy" value="3.30"/>
-    <param name="kpz" value="2.25"/>  <!--1.9-->
+    <param name="thrustRatio" value="1.60"/>  <!-- maxThrust/Weight -->
+    <param name="kpx" value="3.15"/>  <!--3.0-->
+    <param name="kpy" value="3.20"/>
+    <param name="kpz" value="1.95"/>  <!--1.9-->
     <param name="kvx" value="3.40"/>  <!--3.7-->
     <param name="kvy" value="3.45"/>
     <param name="kvz" value="2.25"/>  <!--1.9-->
-    <param name="kix" value="0.025"/>
+    <param name="kix" value="0.045"/>
     <param name="kiy" value="0.050"/>
-    <param name="kiz" value="0.035"/>
+    <param name="kiz" value="0.075"/>
     <param name="maxInteg_x" value="1.0"/>
     <param name="maxInteg_y" value="1.0"/>
     <param name="maxInteg_z" value="1.0"/>

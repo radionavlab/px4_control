@@ -46,13 +46,13 @@ int main(int argc, char **argv)
   printCurrentState(FSM);
 
   //Get odometry topic and joystick driver
-  ros::param::get("/px4_control_node/odomTopic", odomTopic);
-  ros::param::get("/px4_control_node/joyDriver", joyDriver);
-  ros::param::get("/px4_control_node/pvaTopic", pvaTopic);
+  ros::param::get("px4_control_node/odomTopic", odomTopic);
+  ros::param::get("px4_control_node/joyDriver", joyDriver);
+  ros::param::get("px4_control_node/pvaTopic", pvaTopic);
 
   //Create services ------------------------------------------
-  ros::ServiceServer PID_srv = n.advertiseService("/px4_control_node/updatePosControlParam", updatePosControlParam);
-  ros::ServiceServer Param_srv = n.advertiseService("/px4_control_node/updateQuadParam", updateSystemParam);
+  ros::ServiceServer PID_srv = n.advertiseService("px4_control_node/updatePosControlParam", updatePosControlParam);
+  ros::ServiceServer Param_srv = n.advertiseService("px4_control_node/updateQuadParam", updateSystemParam);
 
   //Subscribers ----------------------------------------------
   ros::Subscriber stateSub = n.subscribe("mavros/state", 10, stateCallback);
