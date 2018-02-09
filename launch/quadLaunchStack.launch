@@ -7,7 +7,7 @@
     <group ns="phoenix">
         <include file="$(find px4_control)/launch/joy_group.launch"> </include>
         <include file="$(find px4_control)/launch/360_group.launch"> </include>
-        <include file="$(find gps_kf)/launch/gps_group.launch"> </include>
+        <!-- <include file="$(find gps_kf)/launch/gps_group.launch"> </include> -->
         <include file="$(find mavros)/launch/node.launch">
             <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
             <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />

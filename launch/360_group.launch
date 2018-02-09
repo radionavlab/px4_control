@@ -30,12 +30,12 @@
     <param name="mass" value="0.7623"/>       <!-- kg -->
     <param name="gz" value="9.81"/>          <!-- m/s^2 -->
     <param name="thrustRatio" value="1.60"/>  <!-- maxThrust/Weight -->
-    <param name="kpx" value="3.05"/>  <!--3.0-->
-    <param name="kpy" value="2.95"/>
-    <param name="kpz" value="2.25"/>  <!--1.9-->
-    <param name="kvx" value="3.40"/>  <!--3.7-->
-    <param name="kvy" value="3.45"/>
-    <param name="kvz" value="2.45"/>  <!--1.9-->
+    <param name="kpx" value="2.05"/>  <!--3.0-->
+    <param name="kpy" value="1.95"/>
+    <param name="kpz" value="1.25"/>  <!--1.9-->
+    <param name="kvx" value="1.9"/>  <!--3.7-->
+    <param name="kvy" value="1.95"/>
+    <param name="kvz" value="0.95"/>  <!--1.9-->
     <param name="kix" value="0.025"/>
     <param name="kiy" value="0.050"/>
     <param name="kiz" value="0.035"/>
