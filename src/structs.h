@@ -105,9 +105,9 @@ struct PID_3DOF{
 	Eigen::Vector3d e_deriv;
 	Eigen::Vector3d e_integ;
 	Eigen::Vector3d feedForward;
-	Eigen::Vector3d K_p;
-	Eigen::Vector3d K_i;
-	Eigen::Vector3d K_d;
+	Eigen::Matrix3d K_p;
+	Eigen::Matrix3d K_i;
+	Eigen::Matrix3d K_d;
 	Eigen::Vector3d maxInteg;
 };
 

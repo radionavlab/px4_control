@@ -15,9 +15,9 @@ gz = 9.81;
 thrustRatio = 1.8;
 
 %Controller parameters
-Kpx = 10;
-Kpy = 10;
-Kpz = 10;
+Kpx = 15;
+Kpy = 15;
+Kpz = 15;
 Kvx = 5;
 Kvy = 5;
 Kvz = 7.5;

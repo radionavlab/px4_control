@@ -45,4 +45,12 @@ void PosController(nav_msgs::Odometry Odom,
 	               PID_3DOF &PosPID,
 	               mavros_msgs::AttitudeTarget &AttThrustRef);
 
+// Position controller with 2 feedback loops
+void PosController2(nav_msgs::Odometry Odom,
+	                PVA_structure PVA_ref,
+	                PosControlParam Param,
+	                double dt,
+	                PID_3DOF &PosPID,
+	                mavros_msgs::AttitudeTarget &AttThrustRef);
+
 #endif

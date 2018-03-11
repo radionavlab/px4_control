@@ -20,9 +20,14 @@ void updateControlParamPID3(PID_3DOF &PID,
 	                       Eigen::Vector3d K_i, 
 	                       Eigen::Vector3d K_d, 
 	                       Eigen::Vector3d maxInteg){
-	PID.K_p = K_p;
-	PID.K_d = K_d;
-	PID.K_i = K_i;
+	PID.K_p = Eigen::Matrix3d::Zero();
+	PID.K_d = Eigen::Matrix3d::Zero();
+	PID.K_i = Eigen::Matrix3d::Zero();
+	for (uint i = 0; i < 3; i++) {
+		PID.K_p(i,i) = K_p(i);
+		PID.K_d(i,i) = K_d(i);
+		PID.K_i(i,i) = K_i(i);
+	}
 	PID.maxInteg = maxInteg;
 }
 
@@ -49,9 +54,12 @@ void updateErrorPID3(PID_3DOF &PID,
 Eigen::Vector3d outputPID3(PID_3DOF PID){
 	Eigen::Vector3d PID_out;
 	PID_out =  PID.feedForward + 
-			   PID.e_prop.cwiseProduct(PID.K_p) + 
-			   PID.e_deriv.cwiseProduct(PID.K_d) + 
-			   PID.e_integ.cwiseProduct(PID.K_i);		
+			   PID.K_p*PID.e_prop +
+			   PID.K_d*PID.e_deriv +
+			   PID.K_i*PID.e_integ;
+			   // PID.e_prop.cwiseProduct(PID.K_p) + 
+			   // PID.e_deriv.cwiseProduct(PID.K_d) + 
+			   // PID.e_integ.cwiseProduct(PID.K_i);		
 	return PID_out;
 }
 
@@ -167,6 +175,93 @@ void PosController(nav_msgs::Odometry Odom,
 
 	//Desired thrust in body frame. Outputs thrust as a fraction of max thrust
 	AttThrustRef.thrust = min(max(Fdes.dot(z_b), 0.0),maxThrust)/maxThrust;
+
+	//Find desired attitude from desired force and yaw angle
+	z_bdes = normalizeVector3d(Fdes);
+	x_cdes << cos(yawRef), sin(yawRef), 0;
+	y_bdes = normalizeVector3d(z_bdes.cross(x_cdes));
+	x_bdes = y_bdes.cross(z_bdes);
+	Rdes << x_bdes, y_bdes, z_bdes;
+
+	//Set references
+	AttThrustRef.orientation = rot2quat(Rdes);
+	// PoseRef.pose.position = PVA_ref.Pos.pose.position;
+	// PoseRef.pose.orientation = rot2quat(Rdes);
+}
+
+
+void PosController2(nav_msgs::Odometry Odom,
+	                PVA_structure PVA_ref,
+	                PosControlParam Param,
+	                double dt,
+	                PID_3DOF &PosPID,
+	                mavros_msgs::AttitudeTarget &AttThrustRef){
+
+	//Local variables
+	double m = Param.mass;
+	double gz = Param.gz;
+	double maxThrust = Param.thrustRatio*m*gz;
+
+	double yawRef;							//Desired yaw
+	Eigen::Vector3d e_Pos, e_Vel; 			//error in position and velocity
+	Eigen::Vector3d PosRef, VelRef, AccRef;	//Desired PVA
+	Eigen::Vector3d Pos, Vel;				//Current PV
+	Eigen::Vector3d feedForward;			//Feedforward vector
+	Eigen::Vector3d Fdes;					//Desired force in world frame
+	Eigen::Vector3d Vdes;					//Desired velocity in world frame
+	Eigen::Vector3d z_w, z_b;				//z direction in world and body frames 
+	Eigen::Matrix3d Rbw;					//Rotation from body to world
+	Eigen::Matrix3d Rdes;					//Desired rotation
+	Eigen::Vector3d z_bdes, x_cdes, y_bdes, x_bdes;
+
+	//Desired states
+	PosRef << PVA_ref.Pos.pose.position.x,
+	          PVA_ref.Pos.pose.position.y,
+	          PVA_ref.Pos.pose.position.z;
+	VelRef << PVA_ref.Vel.twist.linear.x,
+	          PVA_ref.Vel.twist.linear.y,
+	          PVA_ref.Vel.twist.linear.z;
+	AccRef << PVA_ref.Acc.accel.linear.x,
+	          PVA_ref.Acc.accel.linear.y,
+	          PVA_ref.Acc.accel.linear.z;
+	yawRef = getHeadingFromQuat(PVA_ref.Pos.pose.orientation);
+
+	//Current states
+	Pos << Odom.pose.pose.position.x,
+	       Odom.pose.pose.position.y,
+	       Odom.pose.pose.position.z;
+	Vel << Odom.twist.twist.linear.x,
+	       Odom.twist.twist.linear.y,
+	       Odom.twist.twist.linear.z;
+
+	//Rotation matrix and z frame vectors
+	Rbw = quat2rot(Odom.pose.pose.orientation);
+	z_b << 0, 0, 1;	// z of the body expressed in body frame
+	z_w = Rbw*z_b;	// z of the body expressed in world frame
+
+	//Calculate errors (Obs: Odom might be in body or inertial frame)
+	e_Pos = PosRef - Pos;
+	std::string frameId = Odom.header.frame_id;
+  	std::string childFrameId = Odom.child_frame_id;
+	if(frameId.compare(childFrameId) == 0){
+		e_Vel = VelRef - Vel;
+	}
+	else{
+		e_Vel = VelRef - Rbw*Vel;
+		Vel = Rbw*Vel;
+	}
+	
+	//Translational controller
+	feedForward = m*gz*z_w + m*AccRef;
+	updateErrorPID3(PosPID, feedForward, e_Pos, e_Vel, dt);
+	Eigen::Matrix3d K_p = PosPID.K_d.inverse()*PosPID.K_p;
+	Vdes =  VelRef + K_p*PosPID.e_prop;
+	Fdes =  feedForward + PosPID.K_d*(Vdes-Vel);
+	// Fdes = outputPID3(PosPID);
+	//ROS_INFO("fdes= %f  %f  %f",Fdes(0),Fdes(1),Fdes(2));
+
+	//Desired thrust in body frame. Outputs thrust as a fraction of max thrust
+	AttThrustRef.thrust = min(max(Fdes.dot(z_w), 0.0),maxThrust)/maxThrust;
 
 	//Find desired attitude from desired force and yaw angle
 	z_bdes = normalizeVector3d(Fdes);
