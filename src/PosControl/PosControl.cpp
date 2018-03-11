@@ -105,8 +105,7 @@ void PosController(nav_msgs::Odometry Odom,
 	               PosControlParam Param,
 	               double dt,
 	               PID_3DOF &PosPID,
-	               geometry_msgs::PoseStamped &PoseRef,
-	               std_msgs::Float64 &refThrust){
+	               mavros_msgs::AttitudeTarget &AttThrustRef){
 
 	//Local variables
 	double m = Param.mass;
@@ -167,7 +166,7 @@ void PosController(nav_msgs::Odometry Odom,
 	//ROS_INFO("fdes= %f  %f  %f",Fdes(0),Fdes(1),Fdes(2));
 
 	//Desired thrust in body frame. Outputs thrust as a fraction of max thrust
-	refThrust.data = min(max(Fdes.dot(z_b), 0.0),maxThrust)/maxThrust;
+	AttThrustRef.thrust = min(max(Fdes.dot(z_b), 0.0),maxThrust)/maxThrust;
 
 	//Find desired attitude from desired force and yaw angle
 	z_bdes = normalizeVector3d(Fdes);
@@ -177,6 +176,7 @@ void PosController(nav_msgs::Odometry Odom,
 	Rdes << x_bdes, y_bdes, z_bdes;
 
 	//Set references
-	PoseRef.pose.position = PVA_ref.Pos.pose.position;
-	PoseRef.pose.orientation = rot2quat(Rdes);
+	AttThrustRef.orientation = rot2quat(Rdes);
+	// PoseRef.pose.position = PVA_ref.Pos.pose.position;
+	// PoseRef.pose.orientation = rot2quat(Rdes);
 }

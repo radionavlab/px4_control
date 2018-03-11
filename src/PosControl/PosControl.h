@@ -2,6 +2,7 @@
 #define _H_POSCONTROL_
 
 #include <math.h>
+#include <mavros_msgs/AttitudeTarget.h>
 #include "nav_msgs/Odometry.h"
 #include "../structs.h"
 
@@ -42,7 +43,6 @@ void PosController(nav_msgs::Odometry Odom,
 	               PosControlParam Param,
 	               double dt,
 	               PID_3DOF &PosPID,
-	               geometry_msgs::PoseStamped &PoseRef,
-	               std_msgs::Float64 &refThrust);
+	               mavros_msgs::AttitudeTarget &AttThrustRef);
 
 #endif
