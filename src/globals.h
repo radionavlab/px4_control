@@ -3,6 +3,7 @@
 #include "sensor_msgs/Joy.h"
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
+#include <mavros_msgs/AttitudeTarget.h>
 #include "std_msgs/Float64.h"
 #include "HelperFunctions/helper.h"
 #include "HelperFunctions/QuatRotEuler.h"

@@ -19,6 +19,9 @@
     <!-- Topic with odometry information for the vehicle -->
     <param name="odomTopic" value="/mavros/local_position/odom"/>
 
+    <!-- Name of topic to use when handling PVA_References-->
+    <param name="pvaTopic" value="px4_control/PVA_Ref"/>
+
     <!-- Type of joystick being used. Admitted types are:
          joyXboxOne  /  joyXbox360  /  joyXbox360Wired -->
     <param name="joyDriver" value="joyXboxOne"/>
@@ -40,5 +43,13 @@
     <param name="maxInteg_y" value="0"/>
     <param name="maxInteg_z" value="0"/>
   </node>
+
+    <node respawn="true" pkg="joy" type="joy_node" name="joy" >
+        <param name="dev" type="string" value="/dev/input/js0" />
+        <param name="deadzone" value="0.12" />
+        <param name="autorepeat_rate" value="20" />
+    </node>
+
+
 </launch>
 

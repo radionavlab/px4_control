@@ -16,9 +16,11 @@ void *FSMTask(void *threadID){
 	mavros_msgs::CommandBool ArmMsg;
 	ArmMsg.request.value = true;
 	mavros_msgs::SetMode ModeMsg;
+	ModeMsg.request.base_mode = 0;
     ModeMsg.request.custom_mode = "OFFBOARD";
 
-    ros::Time last_request = ros::Time::now();
+    ros::Time last_request_offboard = ros::Time::now();
+    ros::Time last_request_arm = ros::Time::now();
 
 	while(1){
 		WaitForEvent(syncEvents.Timeout,50); //Execute every 100ms
@@ -105,6 +107,7 @@ void *FSMTask(void *threadID){
 	    	localPX4state = PX4state;
 	    pthread_mutex_unlock(&mutexes.PX4state);
 
+
 	    //Request to arm depending on desired state
 	    //Chunk of code extracted from 
 	    if((localFSM.State == localFSM.MODE_POSITION_JOY) ||
@@ -112,23 +115,24 @@ void *FSMTask(void *threadID){
 	       (localFSM.State == localFSM.MODE_ATTITUDE)){
 
 	        if( localPX4state.mode != "OFFBOARD" &&
-	            (ros::Time::now() - last_request > ros::Duration(1.0))){
+	            (ros::Time::now() - last_request_offboard > ros::Duration(1.0))){
 	            if( SetModeClient.call(ModeMsg) &&
-	                ModeMsg.response.success){
-	                ROS_INFO("Offboard enabled!");
+	                ModeMsg.response.mode_sent){
+	                ROS_INFO("Enabling offboard...");
 	            }
-	            last_request = ros::Time::now();
-	        } else {
-	            if( !localPX4state.armed &&
-	                (ros::Time::now() - last_request > ros::Duration(1.0))){
-	                ArmMsg.request.value = true;
-	                if( armClient.call(ArmMsg) &&
-	                    ArmMsg.response.success){
-	                    ROS_INFO("Vehicle armed!");
-	                }
-	                last_request = ros::Time::now();
-	            }
+	            last_request_offboard = ros::Time::now();
 	        }
+
+            if( (localPX4state.armed==0) &&
+                (ros::Time::now() - last_request_arm > ros::Duration(1.0))){
+                ArmMsg.request.value = true;
+                if( armClient.call(ArmMsg) &&
+                    ArmMsg.response.success){
+                    ROS_INFO("Arming vehicle...");
+                }
+                last_request_arm = ros::Time::now();
+            }
+	        // }
 	    }
 	    else
 	    {

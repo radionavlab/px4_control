@@ -36,14 +36,17 @@ ROS_INFO("Command Publisher started!");
 	PosControlParam localParam;
 	std_msgs::Float64 refThrust;
 	geometry_msgs::PoseStamped  PoseRef;
+	mavros_msgs::AttitudeTarget AttRef;
+	AttRef.type_mask = AttRef.IGNORE_ROLL_RATE +
+					   AttRef.IGNORE_PITCH_RATE +
+					   AttRef.IGNORE_YAW_RATE;
 
 	//Publishers
 	ros::NodeHandle n; 
 	ros::Publisher PosPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local",100);
     ros::Publisher AttPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_attitude/attitude",100);
+    ros::Publisher AttPub2 = n.advertise<mavros_msgs::AttitudeTarget>("/mavros/setpoint_raw/attitude",100);
     ros::Publisher ThrustPub = n.advertise<std_msgs::Float64>("mavros/setpoint_attitude/att_throttle", 100);
-
-
 
 	ros::Time t_prev = ros::Time::now();
 	ros::Time t_now = ros::Time::now();
@@ -108,6 +111,8 @@ ROS_INFO("Command Publisher started!");
 					PosController(localOdom, localPVA_ref, localParam, dt.toSec(),
 		                          PosPID, PoseRef, refThrust);
 				pthread_mutex_unlock(&mutexes.PID_Pos);
+				AttRef.orientation = PoseRef.pose.orientation;
+				AttRef.thrust = refThrust.data;
 		   	}
 		   	else if (localFSM.PosControlMode == localFSM.POS_CONTROL_PX4){
 				refThrust.data = 0;
@@ -118,11 +123,14 @@ ROS_INFO("Command Publisher started!");
 		else if(localFSM.State == localFSM.MODE_ATTITUDE){
 	    	refThrust = localPVA_ref.thrustRef;
 	    	PoseRef.pose = localPVA_ref.Pos.pose;
-
+			AttRef.orientation = PoseRef.pose.orientation;
+			AttRef.thrust = refThrust.data;
 		}
 		else{
 	    	refThrust.data = 0;
 	    	PoseRef.pose = localOdom.pose.pose;
+			AttRef.orientation = PoseRef.pose.orientation;
+			AttRef.thrust = refThrust.data;
 		}
 
 		//Set header for reference
@@ -130,11 +138,17 @@ ROS_INFO("Command Publisher started!");
 		PoseRef.header.stamp = t_now;
 		PoseRef.header.frame_id = "fcu";
 
+		//Set header for reference
+		AttRef.header.seq = count;
+		AttRef.header.stamp = t_now;
+		AttRef.header.frame_id = "fcu";
+
 		//Publish references
 		if ((localFSM.PosControlMode == localFSM.POS_CONTROL_LOCAL) ||
 		    (localFSM.State == localFSM.MODE_ATTITUDE)){
 			AttPub.publish(PoseRef);
    			ThrustPub.publish(refThrust);
+   			AttPub2.publish(AttRef);
 		}
 		else if (localFSM.PosControlMode == localFSM.POS_CONTROL_PX4){
 			PosPub.publish(PoseRef);

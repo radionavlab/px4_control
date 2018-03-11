@@ -4,8 +4,15 @@
 void stateCallback(const mavros_msgs::State::ConstPtr &msg){
 	pthread_mutex_lock(&mutexes.PX4state);
 		PX4state = *msg;
+		// ROS_INFO("seq: %d", msg->header.seq);
+		// ROS_INFO("stamp: %f", msg->header.stamp.toSec());
+		// ROS_INFO("connected: %d", msg->connected);
+		// ROS_INFO("armed: %d", msg->armed);
+		// ROS_INFO("guided: %d", msg->guided);
+		// ROS_INFO("mode: %s", msg->mode.c_str());
+		// ROS_INFO("system_status: %d", msg->system_status);
+		// std::cout << std::endl;
 	pthread_mutex_unlock(&mutexes.PX4state);
-	// std::cout << state.header.seq << std::endl;
 }
 
 //Get data from odometry topic
@@ -13,6 +20,7 @@ void odomCallback(const nav_msgs::Odometry::ConstPtr &msg){
 	pthread_mutex_lock(&mutexes.odom);
 		odom = *msg;
 	pthread_mutex_unlock(&mutexes.odom);
+	// std::cout << "odom callback" << std::endl;
 }
 
 void tfCallback(const nav_msgs::Odometry::ConstPtr &msg){
