@@ -16,4 +16,4 @@ void tfCallback(const nav_msgs::Odometry::ConstPtr &msg);
 void joyCallback(const sensor_msgs::Joy msg);
 
 //Get PVA references from a ROS topic
-void PVACallback(const px4_control::PVA::ConstPtr &msg);
+void PVACallback(const mg_msgs::PVA::ConstPtr &msg);

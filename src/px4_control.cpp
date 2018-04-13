@@ -14,7 +14,7 @@
 
 // Global variables
 PVA_structure PVA_ref;        //Joystick references
-px4_control::PVA PVA_Ros;     //References from topic
+mg_msgs::PVA PVA_Ros;     //References from topic
 mavros_msgs::State PX4state;
 nav_msgs::Odometry odom;
 joyStruct joy;

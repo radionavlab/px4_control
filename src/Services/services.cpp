@@ -1,8 +1,8 @@
 #include "services.h"
 
 
-bool updatePosControlParam(px4_control::updatePx4param::Request &req,
-	                       px4_control::updatePx4param::Response &res){
+bool updatePosControlParam(mg_msgs::updatePx4param::Request &req,
+	                       mg_msgs::updatePx4param::Response &res){
 	// std_msgs::Float64 Values;
 	// req.push_back(Values.data);
 	// Values = req.data;
@@ -35,8 +35,8 @@ bool updatePosControlParam(px4_control::updatePx4param::Request &req,
 }
 
 //Update mass, thrustRatio and gravity
-bool updateSystemParam(px4_control::updatePx4param::Request &req,
-	                   px4_control::updatePx4param::Response &res){
+bool updateSystemParam(mg_msgs::updatePx4param::Request &req,
+	                   mg_msgs::updatePx4param::Response &res){
 
 	//Check for the right number of arguments
 	if(req.data.size() != 3){
