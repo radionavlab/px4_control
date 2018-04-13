@@ -25,6 +25,7 @@ find_package(Eigen REQUIRED)
 
 catkin_package(
 	DEPENDS Eigen
+  CATKIN_DEPENDS mg_msgs
 #  INCLUDE_DIRS include
 #  LIBRARIES px4_control
 #  CATKIN_DEPENDS geometry_msgs mavros_msgs nav_msgs roscpp std_msgs visualization_msgs
@@ -55,4 +56,5 @@ target_link_libraries(px4_control_node ${catkin_LIBRARIES})
 #This makes sure that messages and services are compiled before the rest
 add_dependencies(px4_control_node px4_control_generate_messages_cpp)
 add_dependencies(px4_control_node ${catkin_EXPORTED_TARGETS})
+add_dependencies(px4_control_node mg_msgs_gencpp)
 
