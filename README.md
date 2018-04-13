@@ -36,6 +36,14 @@ cd ..
 catkin_make
 ```
 
+- mg_msgs (Library with Machine Games message types)
+
+```
+cd ~/catkin_ws/src
+git clone https://github.com/radionavlab/mg_msgs.git
+cd ..
+catkin_make
+```
 
 ## Compiling
 
