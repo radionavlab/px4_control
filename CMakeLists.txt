@@ -18,11 +18,8 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   tf
   cmake_modules
+  mg_msgs
 )
-
-add_message_files(DIRECTORY msg FILES
-   PVA.msg
- )
 
 find_package(Eigen REQUIRED)
 
