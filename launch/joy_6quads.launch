@@ -8,8 +8,8 @@
 	<node name="phoenix_joy" pkg="topic_tools" type="relay"
       args="/joy /phoenix/joy" />
 
-	<node name="valkyrie_joy" pkg="topic_tools" type="relay"
-      args="/joy /valkyrie/joy" />
+	<node name="gryphon_joy" pkg="topic_tools" type="relay"
+      args="/joy /gryphon/joy" />
 
 	<node name="hippogryph_joy" pkg="topic_tools" type="relay"
       args="/joy /hippogryph/joy" />
