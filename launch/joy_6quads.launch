@@ -1,0 +1,25 @@
+<launch>
+    <node respawn="true" pkg="joy" type="joy_node" name="joy">
+            <param name="dev" type="string" value="/dev/input/js0" />
+            <param name="deadzone" value="0.12" />
+	<param name="autorepeat_rate" value="20" />
+            </node>
+
+	<node name="phoenix_joy" pkg="topic_tools" type="relay"
+      args="/joy /phoenix/joy" />
+
+	<node name="valkyrie_joy" pkg="topic_tools" type="relay"
+      args="/joy /valkyrie/joy" />
+
+	<node name="hippogryph_joy" pkg="topic_tools" type="relay"
+      args="/joy /hippogryph/joy" />
+
+	<node name="harry_joy" pkg="topic_tools" type="relay"
+      args="/joy /harry/joy" />
+
+	<node name="hermione_joy" pkg="topic_tools" type="relay"
+      args="/joy /hermione/joy" />
+
+	<node name="ron_joy" pkg="topic_tools" type="relay"
+      args="/joy /ron/joy" />
+</launch>
