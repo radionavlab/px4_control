@@ -1,5 +1,5 @@
 <launch>
-<arg name="fcu_url" default="udp://localhost:14550@192.168.1.4:14556"/>
+<arg name="fcu_url"/>
 <arg name="gcs_url" default="" />
 <arg name="tgt_system" default="1" />
 <arg name="tgt_component" default="1" />
