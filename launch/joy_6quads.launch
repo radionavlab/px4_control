@@ -14,6 +14,9 @@
 	<node name="hippogryph_joy" pkg="topic_tools" type="relay"
       args="/joy /hippogryph/joy" />
 
+        <node name="pegasus_joy" pkg="topic_tools" type="relay"
+      args="/joy /pegasus/joy" />
+
 	<node name="harry_joy" pkg="topic_tools" type="relay"
       args="/joy /harry/joy" />
 
@@ -22,4 +25,7 @@
 
 	<node name="ron_joy" pkg="topic_tools" type="relay"
       args="/joy /ron/joy" />
+
+        <node name="luna_joy" pkg="topic_tools" type="relay"
+      args="/joy /luna_joy" />
 </launch>

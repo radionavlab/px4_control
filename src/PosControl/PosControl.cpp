@@ -42,6 +42,7 @@ void updateErrorPID3(PID_3DOF &PID,
 		PID.e_integ(i) = saturate(PID.e_integ(i), 
 			                     -PID.maxInteg(i), 
 			                      PID.maxInteg(i));
+        std::cout << "eI=: " << PID.e_integ(i) << std::endl;
 	}
 }
 
