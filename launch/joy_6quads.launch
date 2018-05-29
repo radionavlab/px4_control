@@ -27,5 +27,5 @@
       args="/joy /ron/joy" />
 
         <node name="luna_joy" pkg="topic_tools" type="relay"
-      args="/joy /luna_joy" />
+      args="/joy /luna/joy" />
 </launch>

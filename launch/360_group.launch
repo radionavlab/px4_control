@@ -11,10 +11,10 @@
     <param name="maxThrust" value="1.0"/>    <!-- From 0 to 1 -->
 
     <!-- Joystick Position Reference parameters -->
-    <param name="xRate" value="0.55"/>       <!-- meters/sec -->
-    <param name="yRate" value="0.55"/>       <!-- meters/sec -->
+    <param name="xRate" value="1.5"/>       <!-- meters/sec -->
+    <param name="yRate" value="1.2"/>       <!-- meters/sec -->
     <param name="zRate" value="0.4"/>       <!-- meters/sec -->
-    <param name="PosRefTimeConstant" value="0.2"/> <!-- seconds -->
+    <param name="PosRefTimeConstant" value="0.4"/> <!-- seconds -->
 
     <!-- Topic with odometry information for the vehicle -->
     <param name="odomTopic" value="local_odom"/>

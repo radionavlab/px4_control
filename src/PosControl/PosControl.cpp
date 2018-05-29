@@ -42,7 +42,7 @@ void updateErrorPID3(PID_3DOF &PID,
 		PID.e_integ(i) = saturate(PID.e_integ(i), 
 			                     -PID.maxInteg(i), 
 			                      PID.maxInteg(i));
-        std::cout << "eI=: " << PID.e_integ(i) << std::endl;
+//        ROS_INFO("eI: %f  %f  %f",PID.e_integ(0), PID.e_integ(1), PID.e_integ(2));
 	}
 }
 
