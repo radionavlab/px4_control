@@ -7,7 +7,7 @@
     <arg name="machine_user"/>
     <arg name="machine_pass"/>    
     <group ns="hermione">
-        <machine name="linaro" address="hermoine-snapdragon" env-loader="/opt/ros/indigo/env.sh"
+        <machine name="linaro" address="hermione-snapdragon" env-loader="/opt/ros/indigo/env.sh"
             default="true" user="$(arg machine_user)" password="$(arg machine_pass)"/>
         <include file="$(find px4_control)/launch/joy_group.launch"> </include>
         <include file="$(find px4_control)/launch/360_group.launch"> </include>
