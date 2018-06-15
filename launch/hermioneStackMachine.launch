@@ -1,13 +1,13 @@
 <launch>
-    <arg name="fcu_url" default="udp://:14580@192.168.1.4:14585"/>
+    <arg name="fcu_url" default="udp://:14570@192.168.1.4:14575"/>
     <arg name="gcs_url" default="" />
     <arg name="tgt_system" default="1" />
     <arg name="tgt_component" default="1" />
     <arg name="log_output" default="screen" />
     <arg name="machine_user"/>
     <arg name="machine_pass"/>    
-    <group ns="luna">
-        <machine name="linaro" address="luna-snapdragon" env-loader="/opt/ros/indigo/env.sh"
+    <group ns="hermione">
+        <machine name="linaro" address="hermoine-snapdragon" env-loader="/opt/ros/indigo/env.sh"
             default="true" user="$(arg machine_user)" password="$(arg machine_pass)"/>
         <include file="$(find px4_control)/launch/joy_group.launch"> </include>
         <include file="$(find px4_control)/launch/360_group.launch"> </include>
