@@ -9,7 +9,6 @@
     <group ns="hippogryph">
         <machine name="linaro" address="hippogryph-snapdragon" env-loader="/opt/ros/indigo/env.sh"
             default="true" user="$(arg machine_user)" password="$(arg machine_pass)"/>
-        <include file="$(find px4_control)/launch/joy_group.launch"> </include>
         <include file="$(find px4_control)/launch/360_group.launch"> </include>
         <include file="$(find mavros)/launch/node.launch">
             <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
