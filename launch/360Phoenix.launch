@@ -1,7 +1,6 @@
 <launch>
   <node pkg="px4_control"
     type="px4_control_node"
-    ns="phoenix"
     name="px4_control_node"
     output="screen">
 

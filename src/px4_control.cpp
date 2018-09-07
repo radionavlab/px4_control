@@ -30,7 +30,7 @@ std::string odomTopic, joyDriver, pvaTopic;
 int main(int argc, char **argv)
 {
   //Initialize ROS
-  ros::init(argc, argv, "controlPkg");
+  ros::init(argc, argv, "~");
   ros::NodeHandle n;  
 
   //Initialize some variables
