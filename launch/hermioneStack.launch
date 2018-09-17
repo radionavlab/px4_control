@@ -1,10 +1,10 @@
 <launch>
-    <arg name="fcu_url" default="udp://:14552@192.168.1.4:14556"/>
+    <arg name="fcu_url" default="udp://:14570@192.168.1.4:14575"/>
     <arg name="gcs_url" default="" />
     <arg name="tgt_system" default="1" />
     <arg name="tgt_component" default="1" />
     <arg name="log_output" default="screen" />
-    <group ns="phoenix">
+    <group ns="hermione">
         <include file="$(find px4_control)/launch/joy_group.launch"> </include>
         <include file="$(find px4_control)/launch/360_group.launch"> </include>
         <!-- <include file="$(find gps_kf)/launch/gps_group.launch"> </include> -->

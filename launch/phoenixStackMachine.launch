@@ -1,13 +1,16 @@
 <launch>
-    <arg name="fcu_url" default="udp://:14552@192.168.1.4:14556"/>
+    <arg name="fcu_url" default="udp://:14510@192.168.1.4:14515"/>
     <arg name="gcs_url" default="" />
     <arg name="tgt_system" default="1" />
     <arg name="tgt_component" default="1" />
     <arg name="log_output" default="screen" />
+    <arg name="machine_user"/>
+    <arg name="machine_pass"/>    
     <group ns="phoenix">
+        <machine name="linaro" address="phoenix-snapdragon" env-loader="/opt/ros/indigo/env.sh"
+            default="true" user="$(arg machine_user)" password="$(arg machine_pass)"/>
         <include file="$(find px4_control)/launch/joy_group.launch"> </include>
         <include file="$(find px4_control)/launch/360_group.launch"> </include>
-        <!-- <include file="$(find gps_kf)/launch/gps_group.launch"> </include> -->
         <include file="$(find mavros)/launch/node.launch">
             <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
             <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
