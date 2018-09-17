@@ -39,9 +39,9 @@ ROS_INFO("Command Publisher started!");
 
 	//Publishers
 	ros::NodeHandle n; 
-	ros::Publisher PosPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local",100);
-    ros::Publisher AttPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_attitude/attitude",100);
-    ros::Publisher ThrustPub = n.advertise<std_msgs::Float64>("mavros/setpoint_attitude/att_throttle", 100);
+	ros::Publisher PosPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local-AL",100);
+    ros::Publisher AttPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_attitude/attitude_AL",100);
+    ros::Publisher ThrustPub = n.advertise<std_msgs::Float64>("mavros/setpoint_attitude/att_throttle_AL", 100);
 
 
 
