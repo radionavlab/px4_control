@@ -41,6 +41,6 @@
     <param name="kiz" value="0.035"/>
     <param name="maxInteg_x" value="1.0"/>
     <param name="maxInteg_y" value="1.0"/>
-    <param name="maxInteg_z" value="2.0"/>
+    <param name="maxInteg_z" value="3.0"/>
   </node>
 </launch>
