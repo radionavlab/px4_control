@@ -19,12 +19,12 @@
     <!-- Topic with odometry information for the vehicle -->
     <param name="odomTopic" value="local_odom"/>
 
+    <!-- Name of topic to use when handling PVA_References-->
+    <param name="pvaTopic" value="px4_control/PVA_Ref"/>
+
     <!-- Type of joystick being used. Admitted types are:
          joyXboxOne  /  joyXbox360  /  joyXbox360Wired -->
     <param name="joyDriver" value="joyXbox360Wired"/>
-
-    <!-- Name of topic to use when handling PVA_References-->
-    <param name="pvaTopic" value="px4_control/PVA_Ref"/>
     
     <!-- Position Control parameters -->
     <param name="mass" value="0.58"/>       <!-- kg -->

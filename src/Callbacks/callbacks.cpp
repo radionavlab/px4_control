@@ -42,7 +42,6 @@ void tfCallback(const nav_msgs::Odometry::ConstPtr &msg){
 
 //Get data from joysticks using appropriate driver
 void joyCallback(const sensor_msgs::Joy msg){
-ROS_INFO("joy");
 	//Load appropriate drivers based on controller
 	if(joyDriver.compare("joyXboxOne") == 0){
 		pthread_mutex_lock(&mutexes.joy);
