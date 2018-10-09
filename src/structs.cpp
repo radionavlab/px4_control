@@ -111,7 +111,7 @@ void initializeStateMachine(StateMachine &FSM){
 	//Start disarmed / Position control is don in this node
 	FSM.State = FSM.MODE_DISARM;
 	FSM.PosControlMode = FSM.POS_CONTROL_LOCAL;
-	FSM.PosRefMode = FSM.POS_REF_WORLD;
+	FSM.PosRefMode = FSM.POS_REF_BODY;
 }
 
 void printCurrentState(StateMachine FSM){

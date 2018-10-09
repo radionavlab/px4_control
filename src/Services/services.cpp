@@ -60,3 +60,18 @@ bool updateSystemParam(mg_msgs::updatePx4param::Request &req,
 
 	return true;
 }
+
+bool setQuadPVAMode(std_srvs::Trigger::Request &req,
+	                std_srvs::Trigger::Response &res) {
+	if(WaitForEvent(joyEvents.buttonB,0) == 0){
+	    pthread_mutex_lock(&mutexes.FSM);
+		    if(FSM.State != FSM.MODE_POSITION_ROS){
+		    	ROS_INFO("ROS Position Mode!");
+		    }
+	    	FSM.State = FSM.MODE_POSITION_ROS;
+	    pthread_mutex_unlock(&mutexes.FSM);
+	}
+	res.success	= true;
+
+	return true;
+}

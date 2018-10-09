@@ -43,8 +43,6 @@ ROS_INFO("Command Publisher started!");
     ros::Publisher AttPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_attitude/attitude",100);
     ros::Publisher ThrustPub = n.advertise<std_msgs::Float64>("mavros/setpoint_attitude/att_throttle", 100);
 
-
-
 	ros::Time t_prev = ros::Time::now();
 	ros::Time t_now = ros::Time::now();
 	ros::Duration dt;

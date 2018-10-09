@@ -53,6 +53,7 @@ int main(int argc, char **argv)
   //Create services ------------------------------------------
   ros::ServiceServer PID_srv = n.advertiseService("px4_control_node/updatePosControlParam", updatePosControlParam);
   ros::ServiceServer Param_srv = n.advertiseService("px4_control_node/updateQuadParam", updateSystemParam);
+  ros::ServiceServer PVA_mode_srv = n.advertiseService("px4_control_node/setQuadPVAMode", setQuadPVAMode);
 
   //Subscribers ----------------------------------------------
   ros::Subscriber stateSub = n.subscribe("mavros/state", 10, stateCallback);
@@ -60,6 +61,11 @@ int main(int argc, char **argv)
   ros::Subscriber tfSub = n.subscribe(odomTopic, 10, tfCallback);
   ros::Subscriber joySub = n.subscribe("joy", 10, joyCallback);
   ros::Subscriber PvaSub = n.subscribe(pvaTopic, 10, PVACallback);
+
+  //Echo subscriber topics
+  ROS_INFO("odomSub topic: %s", odomSub.getTopic().c_str());
+  ROS_INFO("PvaSub topic: %s", PvaSub.getTopic().c_str());
+  ROS_INFO("joySub topic: %s", joySub.getTopic().c_str());
 
   //Threads --------------------------------------------------
   pthread_t h_FSMThread;      //Finite state machine
