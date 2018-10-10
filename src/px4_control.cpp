@@ -58,9 +58,9 @@ int main(int argc, char **argv)
   //Subscribers ----------------------------------------------
   ros::Subscriber stateSub = n.subscribe("mavros/state", 10, stateCallback);
   ros::Subscriber odomSub = n.subscribe(odomTopic, 10, odomCallback);
-  ros::Subscriber tfSub = n.subscribe(odomTopic, 10, tfCallback);
   ros::Subscriber joySub = n.subscribe("joy", 10, joyCallback);
   ros::Subscriber PvaSub = n.subscribe(pvaTopic, 10, PVACallback);
+  // ros::Subscriber tfSub = n.subscribe(odomTopic, 10, tfCallback);
 
   //Echo subscriber topics
   ROS_INFO("odomSub topic: %s", odomSub.getTopic().c_str());

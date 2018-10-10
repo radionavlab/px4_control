@@ -21,6 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   cmake_modules
   mg_msgs
+  mav_trajectory_generation_ros
 )
 
 find_package(Eigen REQUIRED)
@@ -59,6 +60,7 @@ if(USE_KINETIC)
 
     #This makes sure that messages and services are compiled before the rest
     add_dependencies(px4_control_node px4_control_generate_messages_cpp)
+    add_dependencies(px4_control_node mav_trajectory_generation_ros_generate_messages_cpp)
     add_dependencies(px4_control_node ${catkin_EXPORTED_TARGETS})
     add_dependencies(px4_control_node mg_msgs_gencpp)
 else()
@@ -79,6 +81,7 @@ else()
 
     #This makes sure that messages and services are compiled before the rest
     add_dependencies(px4_control_node px4_control_generate_messages_cpp)
+    add_dependencies(px4_control_node mav_trajectory_generation_ros_generate_messages_cpp)
     add_dependencies(px4_control_node ${catkin_EXPORTED_TARGETS})
     add_dependencies(px4_control_node mg_msgs_gencpp)
 endif(USE_KINETIC)
