@@ -35,13 +35,14 @@ ROS_INFO("Command Publisher started!");
 	PVA_structure localPVA_ref;
 	PosControlParam localParam;
 	std_msgs::Float64 refThrust;
-	geometry_msgs::PoseStamped  PoseRef;
+	geometry_msgs::PoseStamped PoseRef, RvizPoseRef;
 
 	//Publishers
 	ros::NodeHandle n; 
 	ros::Publisher PosPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local",100);
     ros::Publisher AttPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_attitude/attitude",100);
     ros::Publisher ThrustPub = n.advertise<std_msgs::Float64>("mavros/setpoint_attitude/att_throttle", 100);
+    ros::Publisher RvizPosPub = n.advertise<geometry_msgs::PoseStamped>("px4_control_node/local_setpoint",100);
 
 	ros::Time t_prev = ros::Time::now();
 	ros::Time t_now = ros::Time::now();
@@ -137,8 +138,9 @@ ROS_INFO("Command Publisher started!");
 		else if (localFSM.PosControlMode == localFSM.POS_CONTROL_PX4){
 			PosPub.publish(PoseRef);
 		}
-
-
+		RvizPoseRef = PoseRef;
+		RvizPoseRef.header.frame_id = "map";
+		RvizPosPub.publish(RvizPoseRef);
 
    		count += 1;
 	}

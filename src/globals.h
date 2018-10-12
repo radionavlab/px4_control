@@ -20,6 +20,7 @@ extern mg_msgs::PVA PVA_Ros;
 extern mutexStruct mutexes;
 extern joyEventList joyEvents;
 extern syncEventList syncEvents;
+extern triggerEventList triggerEvents;
 extern StateMachine FSM;
 extern int threadCount;
 extern PID_3DOF PosPID;

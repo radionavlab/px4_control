@@ -8,6 +8,8 @@
 #include "Threads/joyTask.h"
 #include "Threads/commPub.h"
 #include "Services/services.h"
+#include "Actions/actions.h"
+#include <mg_msgs/follow_PVAJS_trajectoryAction.h>
 
 #include <pthread.h>
 
@@ -20,6 +22,7 @@ nav_msgs::Odometry odom;
 joyStruct joy;
 joyEventList joyEvents;
 syncEventList syncEvents;
+triggerEventList triggerEvents;
 mutexStruct mutexes;
 StateMachine FSM;
 int threadCount = 0;
@@ -36,7 +39,7 @@ int main(int argc, char **argv)
   //Initialize some variables
   initializePVA(PVA_ref);
   initializeJoy(joy);
-  initializeEvents(joyEvents, syncEvents);
+  initializeEvents(joyEvents, syncEvents, triggerEvents);
   initializeMutexes(mutexes);
   initializeStateMachine(FSM);
   initializePID3(PosPID);
@@ -54,6 +57,10 @@ int main(int argc, char **argv)
   ros::ServiceServer PID_srv = n.advertiseService("px4_control_node/updatePosControlParam", updatePosControlParam);
   ros::ServiceServer Param_srv = n.advertiseService("px4_control_node/updateQuadParam", updateSystemParam);
   ros::ServiceServer PVA_mode_srv = n.advertiseService("px4_control_node/setQuadPVAMode", setQuadPVAMode);
+  ros::ServiceServer disarm_srv = n.advertiseService("px4_control_node/disarmQuad", disarmQuad);
+
+  //Create actions -------------------------------------------
+  follow_PVAJS_trajectoryAction follow_PVAJS_trajectory_action("follow_PVAJS_trajectory_action");
 
   //Subscribers ----------------------------------------------
   ros::Subscriber stateSub = n.subscribe("mavros/state", 10, stateCallback);
@@ -154,7 +161,7 @@ int main(int argc, char **argv)
   }
 
   //Terminate program ---------------------------------------------
-  destroyEvents(joyEvents, syncEvents);
+  destroyEvents(joyEvents, syncEvents, triggerEvents);
   destroyMutexes(mutexes);
 
   ROS_INFO("Process Ended with Success!");

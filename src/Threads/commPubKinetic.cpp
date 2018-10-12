@@ -35,7 +35,7 @@ ROS_INFO("Command Publisher started!");
 	nav_msgs::Odometry localOdom;	//Save odometry data locally
 	PVA_structure localPVA_ref;
 	PosControlParam localParam;
-	geometry_msgs::PoseStamped  PoseRef;
+	geometry_msgs::PoseStamped  PoseRef, RvizPoseRef;
 	mavros_msgs::AttitudeTarget AttRef;
 	AttRef.type_mask = AttRef.IGNORE_ROLL_RATE +
 					   AttRef.IGNORE_PITCH_RATE +
@@ -45,6 +45,7 @@ ROS_INFO("Command Publisher started!");
 	ros::NodeHandle n; 
 	ros::Publisher PosPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local",100);
     ros::Publisher AttPub = n.advertise<mavros_msgs::AttitudeTarget>("mavros/setpoint_raw/attitude",100);
+    ros::Publisher RvizPosPub = n.advertise<geometry_msgs::PoseStamped>("px4_control_node/local_setpoint",100);
 
 	ros::Time t_prev = ros::Time::now();
 	ros::Time t_now = ros::Time::now();
@@ -110,21 +111,26 @@ ROS_INFO("Command Publisher started!");
 		                          PosPID, AttRef);
 				pthread_mutex_unlock(&mutexes.PID_Pos);
 				PoseRef.pose.position = localPVA_ref.Pos.pose.position;
+				RvizPoseRef.pose.position = PoseRef.pose.position;
+				RvizPoseRef.pose.orientation = AttRef.orientation;
 		   	}
 		   	else if (localFSM.PosControlMode == localFSM.POS_CONTROL_PX4){
 				PoseRef.pose.orientation = setQuat(0, 0, 0, 1);
 				PoseRef.pose = localPVA_ref.Pos.pose;
+				RvizPoseRef.pose = PoseRef.pose;
 		   	}
 		}
 		else if(localFSM.State == localFSM.MODE_ATTITUDE){
 	    	PoseRef.pose = localPVA_ref.Pos.pose;
 			AttRef.orientation = PoseRef.pose.orientation;
 			AttRef.thrust = localPVA_ref.thrustRef.data;
+			RvizPoseRef.pose = PoseRef.pose;
 		}
 		else{
 	    	PoseRef.pose = localOdom.pose.pose;
 			AttRef.orientation = PoseRef.pose.orientation;
 			AttRef.thrust = 0.0;
+			RvizPoseRef.pose = PoseRef.pose;
 		}
 
 		//Set header for position reference
@@ -137,6 +143,11 @@ ROS_INFO("Command Publisher started!");
 		AttRef.header.stamp = t_now;
 		AttRef.header.frame_id = "fcu";
 
+		// Set header for Rviz publisher
+		RvizPoseRef.header.seq = count;
+		RvizPoseRef.header.stamp = t_now;
+		RvizPoseRef.header.frame_id = "map";
+
 		//Publish references
 		if ((localFSM.PosControlMode == localFSM.POS_CONTROL_LOCAL) ||
 		    (localFSM.State == localFSM.MODE_ATTITUDE)){
@@ -145,7 +156,7 @@ ROS_INFO("Command Publisher started!");
 		else if (localFSM.PosControlMode == localFSM.POS_CONTROL_PX4){
 			PosPub.publish(PoseRef);
 		}
-
+		RvizPosPub.publish(RvizPoseRef);
 
 
    		count += 1;

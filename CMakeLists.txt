@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(px4_control)
 
-option(USE_KINETIC "Use kinetic version instead of indigo version" TRUE) #OFF by default
+option(USE_KINETIC "Use kinetic version instead of indigo version" TRUE) # TRUE/FALSE
 
 ## Add support for C++11, supported in ROS Kinetic and newer
 # add_definitions(-std=c++11)
@@ -11,6 +11,7 @@ option(USE_KINETIC "Use kinetic version instead of indigo version" TRUE) #OFF by
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  actionlib_msgs
   geometry_msgs
   mavros_msgs
   nav_msgs
@@ -21,7 +22,6 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   cmake_modules
   mg_msgs
-  mav_trajectory_generation_ros
 )
 
 find_package(Eigen REQUIRED)
@@ -60,7 +60,6 @@ if(USE_KINETIC)
 
     #This makes sure that messages and services are compiled before the rest
     add_dependencies(px4_control_node px4_control_generate_messages_cpp)
-    add_dependencies(px4_control_node mav_trajectory_generation_ros_generate_messages_cpp)
     add_dependencies(px4_control_node ${catkin_EXPORTED_TARGETS})
     add_dependencies(px4_control_node mg_msgs_gencpp)
 else()
@@ -81,7 +80,6 @@ else()
 
     #This makes sure that messages and services are compiled before the rest
     add_dependencies(px4_control_node px4_control_generate_messages_cpp)
-    add_dependencies(px4_control_node mav_trajectory_generation_ros_generate_messages_cpp)
     add_dependencies(px4_control_node ${catkin_EXPORTED_TARGETS})
     add_dependencies(px4_control_node mg_msgs_gencpp)
 endif(USE_KINETIC)

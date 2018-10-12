@@ -59,12 +59,19 @@ struct joyEventList{
 	neosmart::neosmart_event_t buttonDown;
 };
 
+//Event handlers that are triggered by threads to switch states
+struct triggerEventList{
+	neosmart::neosmart_event_t switch2ros_position_mode;
+	neosmart::neosmart_event_t switch2joy_position_mode;
+	neosmart::neosmart_event_t disarm_quad;
+};
+
 //Events for thread synchronization
 struct syncEventList{
 	neosmart::neosmart_event_t Timeout;     //Always zero event
 	neosmart::neosmart_event_t Terminate; 	//Program termination event
 	neosmart::neosmart_event_t Joy_trigger; //triggers joystick thread
-	neosmart::neosmart_event_t CommPub_trigger; //triggers joystick thread
+	neosmart::neosmart_event_t CommPub_trigger; //triggers CommPub thread
 };
 
 //Mutexes for safely sharing data between threads
@@ -125,10 +132,10 @@ void initializePVA(PVA_structure &PVA);
 void initializeJoy(joyStruct &Joy);
 
 //Initialize event handles
-void initializeEvents(joyEventList &JoyEvents, syncEventList &SyncEvents);
+void initializeEvents(joyEventList &JoyEvents, syncEventList &SyncEvents, triggerEventList &triggerEvents);
 
 //Destroy all event handles
-void destroyEvents(joyEventList &JoyEvents, syncEventList &SyncEvents);
+void destroyEvents(joyEventList &JoyEvents, syncEventList &SyncEvents, triggerEventList &triggerEvents);
 
 //Initialize mutex handles
 void initializeMutexes(mutexStruct &mutexes);

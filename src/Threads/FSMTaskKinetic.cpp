@@ -97,6 +97,26 @@ void *FSMTask(void *threadID){
 			ROS_INFO("Terminating Node!");
 		    SetEvent(syncEvents.Terminate);
 		}
+		if(WaitForEvent(triggerEvents.switch2ros_position_mode, 0) == 0) {
+		    pthread_mutex_lock(&mutexes.FSM);
+			    if(FSM.State != FSM.MODE_POSITION_ROS){
+			    	ROS_INFO("ROS Position Mode!");
+			    }
+		    	FSM.State = FSM.MODE_POSITION_ROS;
+		    pthread_mutex_unlock(&mutexes.FSM);
+		}
+		if(WaitForEvent(triggerEvents.switch2joy_position_mode, 0) == 0) {
+			ROS_INFO("Joystick Position Mode!");
+		    pthread_mutex_lock(&mutexes.FSM);
+		    	FSM.State = FSM.MODE_POSITION_JOY;
+		    pthread_mutex_unlock(&mutexes.FSM);
+		}
+		if(WaitForEvent(triggerEvents.disarm_quad, 0) == 0) {
+			ROS_INFO("Disarming...");
+		    pthread_mutex_lock(&mutexes.FSM);
+		    	FSM.State = FSM.MODE_DISARM;
+		    pthread_mutex_unlock(&mutexes.FSM);
+		}
 
 		//Get information about state of the system
 	    pthread_mutex_lock(&mutexes.FSM);

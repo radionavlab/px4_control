@@ -27,29 +27,38 @@ void initializeJoy(joyStruct &Joy){
 	Joy.R2 = 0;
 }
 
-void initializeEvents(joyEventList &JoyEvents, syncEventList &SyncEvents){
+void initializeEvents(joyEventList &JoyEvents,
+	                  syncEventList &SyncEvents,
+	                  triggerEventList &triggerEvents){
 	//Auto-reset events
-	JoyEvents.buttonA = neosmart::CreateEvent(false,false); 
-	JoyEvents.buttonB = neosmart::CreateEvent(false,false); 
-	JoyEvents.buttonX = neosmart::CreateEvent(false,false); 
-	JoyEvents.buttonY = neosmart::CreateEvent(false,false); 
-	JoyEvents.buttonR1 = neosmart::CreateEvent(false,false); 
-	JoyEvents.buttonL1 = neosmart::CreateEvent(false,false); 
-	JoyEvents.buttonSelect = neosmart::CreateEvent(false,false); 
-	JoyEvents.buttonStart = neosmart::CreateEvent(false,false); 
-	JoyEvents.buttonLeft = neosmart::CreateEvent(false,false); 
-	JoyEvents.buttonRight = neosmart::CreateEvent(false,false); 
-	JoyEvents.buttonUp = neosmart::CreateEvent(false,false); 
-	JoyEvents.buttonDown = neosmart::CreateEvent(false,false); 
+	JoyEvents.buttonA = neosmart::CreateEvent(false,false);
+	JoyEvents.buttonB = neosmart::CreateEvent(false,false);
+	JoyEvents.buttonX = neosmart::CreateEvent(false,false);
+	JoyEvents.buttonY = neosmart::CreateEvent(false,false);
+	JoyEvents.buttonR1 = neosmart::CreateEvent(false,false);
+	JoyEvents.buttonL1 = neosmart::CreateEvent(false,false);
+	JoyEvents.buttonSelect = neosmart::CreateEvent(false,false);
+	JoyEvents.buttonStart = neosmart::CreateEvent(false,false);
+	JoyEvents.buttonLeft = neosmart::CreateEvent(false,false);
+	JoyEvents.buttonRight = neosmart::CreateEvent(false,false);
+	JoyEvents.buttonUp = neosmart::CreateEvent(false,false);
+	JoyEvents.buttonDown = neosmart::CreateEvent(false,false);
+
 	SyncEvents.Timeout = neosmart::CreateEvent(false,false);
 	SyncEvents.Joy_trigger = neosmart::CreateEvent(false,false);
 	SyncEvents.CommPub_trigger = neosmart::CreateEvent(false,false);
+
+	triggerEvents.switch2ros_position_mode = neosmart::CreateEvent(false,false);
+	triggerEvents.switch2joy_position_mode = neosmart::CreateEvent(false,false);
+	triggerEvents.disarm_quad = neosmart::CreateEvent(false,false);
 
 	//Manual reset events
 	SyncEvents.Terminate = neosmart::CreateEvent(true,false);
 }
 
-void destroyEvents(joyEventList &JoyEvents, syncEventList &SyncEvents){
+void destroyEvents(joyEventList &JoyEvents,
+	               syncEventList &SyncEvents,
+	               triggerEventList &triggerEvents){
 	neosmart::DestroyEvent(JoyEvents.buttonA);
 	neosmart::DestroyEvent(JoyEvents.buttonB);
 	neosmart::DestroyEvent(JoyEvents.buttonX);
@@ -67,6 +76,10 @@ void destroyEvents(joyEventList &JoyEvents, syncEventList &SyncEvents){
 	neosmart::DestroyEvent(SyncEvents.Terminate);
 	neosmart::DestroyEvent(SyncEvents.Joy_trigger);
 	neosmart::DestroyEvent(SyncEvents.CommPub_trigger);
+
+	neosmart::DestroyEvent(triggerEvents.switch2ros_position_mode);
+	neosmart::DestroyEvent(triggerEvents.switch2joy_position_mode);
+	neosmart::DestroyEvent(triggerEvents.disarm_quad);
 }
 
 

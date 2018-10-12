@@ -63,12 +63,15 @@ bool updateSystemParam(mg_msgs::updatePx4param::Request &req,
 
 bool setQuadPVAMode(std_srvs::Trigger::Request &req,
 	                std_srvs::Trigger::Response &res) {
-    pthread_mutex_lock(&mutexes.FSM);
-	    if(FSM.State != FSM.MODE_POSITION_ROS){
-	    	ROS_INFO("ROS Position Mode!");
-	    }
-    	FSM.State = FSM.MODE_POSITION_ROS;
-    pthread_mutex_unlock(&mutexes.FSM);
+    SetEvent(triggerEvents.switch2ros_position_mode);
+	res.success	= true;
+
+	return true;
+}
+
+bool disarmQuad(std_srvs::Trigger::Request &req,
+	            std_srvs::Trigger::Response &res) {
+    SetEvent(triggerEvents.disarm_quad);
 	res.success	= true;
 
 	return true;
