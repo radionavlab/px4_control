@@ -21,7 +21,7 @@ void loadJoyRefParam(double &RollMax, double &PitchMax, double &YawRateMax,
 }
 
 
-void *joyTaskTimer(void *threadID){
+void joyTaskTimer(){
 
 	ROS_INFO("joyTaskTimer has started!");
 	int SamplingTime = 20;	//Sampling time in milliseconds
@@ -46,7 +46,7 @@ void *joyTaskTimer(void *threadID){
 	pthread_exit(NULL);
 }
 
-void *joyTask(void *threadID){
+void joyTask(const double land_speed){
 
 	//Local variables
 	joyStruct prevJoy;  			//Save last value from joystick
@@ -163,8 +163,8 @@ void *joyTask(void *threadID){
 			
 			//Set yaw angle
 			yawDot = (localJoy.R2 - 1)/2 - (localJoy.L2 - 1)/2;
-			RPY_ref.x = 0;
-			RPY_ref.y = 0;
+			RPY_ref.x = 0.0;
+			RPY_ref.y = 0.0;
 			RPY_ref.z = RPY_ref.z + YawRateMax*yawDot*dt.toSec();
 
 			//Check if integrating in body frame
@@ -178,6 +178,28 @@ void *joyTask(void *threadID){
 				PVA_ref.Pos.pose.orientation = rpy2quat(RPY_ref);
 			pthread_mutex_unlock(&mutexes.PVAref);
 
+		} else if (localFSM.State == localFSM.MODE_AUTOLAND) {
+			//Reference velocity
+			Vel_ref[0] = 0.0;
+			Vel_ref[1] = 0.0;
+			Vel_ref[2] = -land_speed;
+			
+			//Set yaw angle
+			yawDot = 0.0;
+			RPY_ref.x = 0.0;
+			RPY_ref.y = 0.0;
+			RPY_ref.z = RPY_ref.z + YawRateMax*yawDot*dt.toSec();
+
+			//Check if integrating in body frame
+			if(FSM.PosRefMode == FSM.POS_REF_BODY){
+				Rz = rotz(RPY_ref.z); //Rotation about yaw reference
+				Vel_ref = Rz*Vel_ref;
+			}
+			
+			pthread_mutex_lock(&mutexes.PVAref);
+				PVA_ref = filterJoy(PVA_ref, Vel_ref, dt.toSec(), PosRefTimeConstant);
+				PVA_ref.Pos.pose.orientation = rpy2quat(RPY_ref);
+			pthread_mutex_unlock(&mutexes.PVAref);
 		}
 		else if(localFSM.State == localFSM.MODE_ATTITUDE){
 			RPY_ref.x = -RollMax*localJoy.RstickHor;

@@ -6,6 +6,6 @@
 #include "ros/ros.h"
 
 //State Machine thread
-void *FSMTask(void *threadID);
+void FSMTask();
 
 #endif

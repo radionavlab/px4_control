@@ -10,14 +10,13 @@
 
 #include "structs.h"
 
-// All global variables within the code
+// All global variables within the code (mutex-protected)
 extern PVA_structure PVA_ref;
 extern mavros_msgs::State PX4state;
 extern nav_msgs::Odometry odom;
 extern joyStruct joy;
 extern std::string joyDriver;
 extern mg_msgs::PVA PVA_Ros;
-extern mutexStruct mutexes;
 extern joyEventList joyEvents;
 extern syncEventList syncEvents;
 extern triggerEventList triggerEvents;
@@ -25,3 +24,7 @@ extern StateMachine FSM;
 extern int threadCount;
 extern PID_3DOF PosPID;
 extern PosControlParam ControlParam;
+extern double land_speed;
+
+// Mutexes
+extern mutexStruct mutexes;

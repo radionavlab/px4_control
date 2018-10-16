@@ -21,3 +21,15 @@ bool setQuadPVAMode(std_srvs::Trigger::Request &req,
 //Service request to disarm the quad
 bool disarmQuad(std_srvs::Trigger::Request &req,
 	            std_srvs::Trigger::Response &res);
+
+//Service request to land the quad
+bool landQuad(std_srvs::Trigger::Request &req,
+	          std_srvs::Trigger::Response &res);
+
+//Switch position controller to px4 (instead of using locally built controller)
+bool switcPosController2PX4(std_srvs::Trigger::Request &req,
+	                        std_srvs::Trigger::Response &res);
+
+//Switch position controller to locally-built position control
+bool switcPosController2local(std_srvs::Trigger::Request &req,
+	                          std_srvs::Trigger::Response &res);

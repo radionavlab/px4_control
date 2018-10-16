@@ -12,9 +12,9 @@ void loadJoyRefParam(double &RollMax, double &PitchMax, double &YawRateMax,
 	                 double &zRate, double &PosRefTimeConstant);
 
 //Thread for triggering joy task
-void *joyTaskTimer(void *threadID);
+void joyTaskTimer();
 
 //Thread for handling joystick data
-void *joyTask(void *threadID);
+void joyTask(const double land_speed);
 
 #endif

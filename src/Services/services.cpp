@@ -76,3 +76,27 @@ bool disarmQuad(std_srvs::Trigger::Request &req,
 
 	return true;
 }
+
+bool landQuad(std_srvs::Trigger::Request &req,
+	          std_srvs::Trigger::Response &res) {
+    SetEvent(triggerEvents.land_quad);
+	res.success	= true;
+
+	return true;
+}
+
+bool switcPosController2PX4(std_srvs::Trigger::Request &req,
+	                        std_srvs::Trigger::Response &res) {
+    SetEvent(triggerEvents.use_px4_pos_controller);
+	res.success	= true;
+
+	return true;
+}
+
+bool switcPosController2local(std_srvs::Trigger::Request &req,
+	                          std_srvs::Trigger::Response &res) {
+	SetEvent(triggerEvents.use_local_pos_controller);
+	res.success	= true;
+
+	return true;
+}

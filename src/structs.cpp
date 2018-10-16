@@ -51,6 +51,9 @@ void initializeEvents(joyEventList &JoyEvents,
 	triggerEvents.switch2ros_position_mode = neosmart::CreateEvent(false,false);
 	triggerEvents.switch2joy_position_mode = neosmart::CreateEvent(false,false);
 	triggerEvents.disarm_quad = neosmart::CreateEvent(false,false);
+	triggerEvents.land_quad = neosmart::CreateEvent(false,false);
+	triggerEvents.use_px4_pos_controller = neosmart::CreateEvent(false,false);
+	triggerEvents.use_local_pos_controller = neosmart::CreateEvent(false,false);
 
 	//Manual reset events
 	SyncEvents.Terminate = neosmart::CreateEvent(true,false);
@@ -80,6 +83,9 @@ void destroyEvents(joyEventList &JoyEvents,
 	neosmart::DestroyEvent(triggerEvents.switch2ros_position_mode);
 	neosmart::DestroyEvent(triggerEvents.switch2joy_position_mode);
 	neosmart::DestroyEvent(triggerEvents.disarm_quad);
+	neosmart::DestroyEvent(triggerEvents.land_quad);
+	neosmart::DestroyEvent(triggerEvents.use_px4_pos_controller);
+	neosmart::DestroyEvent(triggerEvents.use_local_pos_controller);
 }
 
 
@@ -114,6 +120,7 @@ void initializeStateMachine(StateMachine &FSM){
 	FSM.MODE_ATTITUDE = 1;		//Attitude mode
 	FSM.MODE_POSITION_JOY = 2;	//Position control with references from joystick
 	FSM.MODE_POSITION_ROS = 3;	//Position control with references from a ROS topic
+	FSM.MODE_AUTOLAND = 4;		//Velocity control for landing quad
 
 	FSM.POS_CONTROL_LOCAL = 0;	//Control is made through the current node
 	FSM.POS_CONTROL_PX4 = 1;	//Control is made through PX4 software
@@ -121,7 +128,7 @@ void initializeStateMachine(StateMachine &FSM){
 	FSM.POS_REF_WORLD = 0;		//Joysticks references integrate in world frame
 	FSM.POS_REF_BODY = 1;		//Joystick references integrate in body frame
 
-	//Start disarmed / Position control is don in this node
+	//Initial states
 	FSM.State = FSM.MODE_DISARM;
 	FSM.PosControlMode = FSM.POS_CONTROL_LOCAL;
 	FSM.PosRefMode = FSM.POS_REF_BODY;
@@ -140,6 +147,10 @@ void printCurrentState(StateMachine FSM){
 	else if(FSM.State == FSM.MODE_POSITION_ROS){
 		ROS_INFO("Current FSM state: POSITION ROS");
 	}
+	else if(FSM.State == FSM.MODE_AUTOLAND){
+		ROS_INFO("Current FSM state: AUTOLAND");
+	}
+
 
 	if(FSM.PosControlMode == FSM.POS_CONTROL_LOCAL){
 		ROS_INFO("Position Control Mode: LOCAL");

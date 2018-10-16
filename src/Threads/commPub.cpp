@@ -1,6 +1,6 @@
 #include "commPub.h"
 
-void *commPubTimer(void *threadID){
+void commPubTimer(){
 	
 	ROS_INFO("commPubTimer has started!");
 	int SamplingTime = 4;	//Sampling time in milliseconds
@@ -25,7 +25,7 @@ void *commPubTimer(void *threadID){
 	pthread_exit(NULL);
 }
 
-void *commPubTask(void *threadID){
+void commPubTask(){
 ROS_INFO("Command Publisher started!");
 
 	//Local variables
@@ -101,8 +101,10 @@ ROS_INFO("Command Publisher started!");
 	    
 	    //Use appropriate settings depending on mode
 		if((localFSM.State == localFSM.MODE_POSITION_JOY) ||
-		   (localFSM.State == localFSM.MODE_POSITION_ROS)){
-		   	if (localFSM.PosControlMode == localFSM.POS_CONTROL_LOCAL){
+		   (localFSM.State == localFSM.MODE_POSITION_ROS) ||
+		   (localFSM.State == localFSM.MODE_AUTOLAND)){
+		   	if ((localFSM.PosControlMode == localFSM.POS_CONTROL_LOCAL) ||
+		        (localFSM.State == localFSM.MODE_AUTOLAND)) {
 		   		pthread_mutex_lock(&mutexes.PID_Pos);
 					PosController(localOdom, localPVA_ref, localParam, dt.toSec(),
 		                          PosPID, PoseRef, refThrust);

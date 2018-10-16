@@ -1,6 +1,6 @@
 #include "FSMTask.h"
 
-void *FSMTask(void *threadID){
+void FSMTask(){
 	ROS_INFO("State Machine Thread started!");
 
 	StateMachine localFSM;	//Save state machine data locally
@@ -62,7 +62,7 @@ void *FSMTask(void *threadID){
 		    pthread_mutex_unlock(&mutexes.FSM);
 		}
 		if(WaitForEvent(joyEvents.buttonLeft,0) == 0){
-			ROS_INFO("Local Position control Mode!");
+			ROS_INFO("SE3 Position Control Mode!");
 		    pthread_mutex_lock(&mutexes.FSM);
 		    	if(FSM.PosControlMode == FSM.POS_CONTROL_LOCAL){
 		    		if(FSM.PosRefMode != FSM.POS_REF_WORLD){
@@ -74,11 +74,11 @@ void *FSMTask(void *threadID){
 			    		ROS_INFO("Joystick reference is in body frame!");
 			    	}
 			    }
-		    	FSM.PosControlMode = FSM.POS_CONTROL_LOCAL;		    	
+		    	FSM.PosControlMode = FSM.POS_CONTROL_LOCAL;
 		    pthread_mutex_unlock(&mutexes.FSM);
 		}
 		if(WaitForEvent(joyEvents.buttonRight,0) == 0){
-			ROS_INFO("PX4 Position control Mode!");
+			ROS_INFO("PX4 Position Control Mode!");
 		    pthread_mutex_lock(&mutexes.FSM);
 		    	if(FSM.PosControlMode == FSM.POS_CONTROL_PX4){
 		    		if(FSM.PosRefMode != FSM.POS_REF_WORLD){
@@ -117,6 +117,24 @@ void *FSMTask(void *threadID){
 		    	FSM.State = FSM.MODE_DISARM;
 		    pthread_mutex_unlock(&mutexes.FSM);
 		}
+		if(WaitForEvent(triggerEvents.land_quad, 0) == 0) {
+			ROS_INFO("Landing...");
+		    pthread_mutex_lock(&mutexes.FSM);
+		    	FSM.State = FSM.MODE_AUTOLAND;
+		    pthread_mutex_unlock(&mutexes.FSM);
+		}
+		if(WaitForEvent(triggerEvents.use_px4_pos_controller, 0) == 0) {
+			ROS_INFO("Switching position controller to PX4...");
+		    pthread_mutex_lock(&mutexes.FSM);
+		    	FSM.PosControlMode = FSM.POS_CONTROL_PX4;
+		    pthread_mutex_unlock(&mutexes.FSM);
+		}
+		if(WaitForEvent(triggerEvents.use_local_pos_controller, 0) == 0) {
+			ROS_INFO("Switching position controller to SE3 (local)...");
+		    pthread_mutex_lock(&mutexes.FSM);
+		    	FSM.PosControlMode = FSM.POS_CONTROL_LOCAL;
+		    pthread_mutex_unlock(&mutexes.FSM);
+		}
 
 		//Get information about state of the system
 	    pthread_mutex_lock(&mutexes.FSM);
@@ -133,6 +151,7 @@ void *FSMTask(void *threadID){
 	    //Chunk of code extracted from 
 	    if((localFSM.State == localFSM.MODE_POSITION_JOY) ||
 	       (localFSM.State == localFSM.MODE_POSITION_ROS) ||
+	       (localFSM.State == localFSM.MODE_AUTOLAND) ||
 	       (localFSM.State == localFSM.MODE_ATTITUDE)){
 
 	        if( localPX4state.mode != "OFFBOARD" &&
@@ -144,7 +163,11 @@ void *FSMTask(void *threadID){
 	            last_request_offboard = ros::Time::now();
 	        }
 
-            if( (localPX4state.armed==0) &&
+	        if ((localFSM.State == localFSM.MODE_AUTOLAND) && !localPX4state.armed) {
+	        	// In autoland, quad disarms automatically when lands. I don't want to rearm
+	        	// after disarming in autoland
+	        	SetEvent(triggerEvents.disarm_quad);
+	        } else if( (localPX4state.armed==0) &&
                 (ros::Time::now() - last_request_arm > ros::Duration(1.0))){
                 ArmMsg.request.value = true;
                 if( armClient.call(ArmMsg) &&
@@ -153,10 +176,7 @@ void *FSMTask(void *threadID){
                 }
                 last_request_arm = ros::Time::now();
             }
-	        // }
-	    }
-	    else
-	    {
+	    } else {
 	    	ArmMsg.request.value = false;
 	    	armClient.call(ArmMsg);
 	    }

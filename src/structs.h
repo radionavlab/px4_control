@@ -64,6 +64,9 @@ struct triggerEventList{
 	neosmart::neosmart_event_t switch2ros_position_mode;
 	neosmart::neosmart_event_t switch2joy_position_mode;
 	neosmart::neosmart_event_t disarm_quad;
+	neosmart::neosmart_event_t land_quad;
+	neosmart::neosmart_event_t use_px4_pos_controller;
+	neosmart::neosmart_event_t use_local_pos_controller;
 };
 
 //Events for thread synchronization
@@ -94,6 +97,7 @@ struct StateMachine{
 	int MODE_ATTITUDE;
 	int MODE_POSITION_JOY;
 	int MODE_POSITION_ROS;
+	int MODE_AUTOLAND;
 
 	int POS_CONTROL_LOCAL;
 	int POS_CONTROL_PX4;
