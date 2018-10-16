@@ -137,10 +137,10 @@ void joyTask(const double land_speed){
 		    if(joy.buttonR1 && !prevJoy.buttonR1){
 		        SetEvent(joyEvents.buttonR1);
 		    }
-		    if(joy.buttonStart && !prevJoy.buttonStart){
-		        SetEvent(joyEvents.buttonStart);
-		    }
 		}
+	    if(joy.buttonStart && !prevJoy.buttonStart){
+	        SetEvent(joyEvents.buttonStart);
+	    }
 		if(localJoy.buttonSelect && !prevJoy.buttonSelect){
 		    SetEvent(joyEvents.buttonSelect);
 		}

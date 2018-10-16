@@ -94,6 +94,14 @@ void FSMTask(){
 			ROS_INFO("Terminating Node!");
 		    SetEvent(syncEvents.Terminate);
 		}
+		if(WaitForEvent(joyEvents.buttonStart, 0) == 0){
+			ROS_INFO("Landing...");
+		    pthread_mutex_lock(&mutexes.FSM);
+		    	FSM.State = FSM.MODE_AUTOLAND;
+		    pthread_mutex_unlock(&mutexes.FSM);
+		}
+
+		// Events triggered by other threads
 		if(WaitForEvent(triggerEvents.switch2ros_position_mode, 0) == 0) {
 		    pthread_mutex_lock(&mutexes.FSM);
 			    if(FSM.State != FSM.MODE_POSITION_ROS){
