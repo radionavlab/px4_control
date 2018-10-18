@@ -50,8 +50,9 @@ if(USE_KINETIC)
                    src/Callbacks/callbacks.cpp
                    src/Threads/FSMTaskKinetic.cpp
                    src/Threads/joyTask.cpp
-                   src/PosControl/PosControlKinetic.cpp
                    src/Threads/commPubKinetic.cpp
+                   src/Threads/watchdogs.cpp
+                   src/PosControl/PosControlKinetic.cpp
                    src/JoyDrivers/joyDrivers.cpp
                    src/pevents/pevents.cpp
                    src/Services/services.cpp
@@ -71,6 +72,7 @@ else()
                    src/Threads/FSMTask.cpp
                    src/Threads/joyTask.cpp
                    src/Threads/commPub.cpp
+                   src/Threads/watchdogs.cpp
                    src/JoyDrivers/joyDrivers.cpp
                    src/PosControl/PosControl.cpp
                    src/pevents/pevents.cpp

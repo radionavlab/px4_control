@@ -21,4 +21,7 @@
 
     <node name="bilbo_joy" pkg="topic_tools" type="relay"
             args="/joy /Bilbo/joy" />
+
+    <!-- Launch RVIZ -->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find px4_control)/Extras/bilbo.rviz"/>
 </launch>

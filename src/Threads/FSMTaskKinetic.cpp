@@ -5,6 +5,7 @@ void FSMTask(){
 
 	StateMachine localFSM;	//Save state machine data locally
 	mavros_msgs::State localPX4state;
+	watchdogTimeouts localWatchdogs;	//Save watchdog data locally
 
 	ros::NodeHandle n;  
 	
@@ -33,35 +34,68 @@ void FSMTask(){
 			break;
 		}
 
+		//Get watchdog info
+		bool pos_mode_enabled;
+	    pthread_mutex_lock(&mutexes.watchdog);
+	    	localWatchdogs = watchdogs;
+	    pthread_mutex_unlock(&mutexes.watchdog);
+	    if ((localWatchdogs.odom_timeout ==  true) || (localWatchdogs.joy_timeout ==  true)) {
+	    	pos_mode_enabled = false;
+	    } else {
+	    	pos_mode_enabled = true;
+	    }
+
 		//Check events for change of state and print when changing states
-		if(WaitForEvent(joyEvents.buttonA,0) == 0){
-			ROS_INFO("Disarming...");
+		if(WaitForEvent(joyEvents.buttonA, 0) == 0){
 		    pthread_mutex_lock(&mutexes.FSM);
-		    	FSM.State = FSM.MODE_DISARM;
+		    	if(FSM.State != FSM.MODE_DISARM){
+			    	ROS_INFO("Disarming...");
+			    	FSM.State = FSM.MODE_DISARM;
+			    }
 		    pthread_mutex_unlock(&mutexes.FSM);
 		}
-		if(WaitForEvent(joyEvents.buttonB,0) == 0){
+		if(WaitForEvent(joyEvents.buttonB, 0) == 0){
 		    pthread_mutex_lock(&mutexes.FSM);
-			    if(FSM.State != FSM.MODE_POSITION_ROS){
+			    if((FSM.State != FSM.MODE_POSITION_ROS) && pos_mode_enabled){
 			    	ROS_INFO("ROS Position Mode!");
+			    	FSM.State = FSM.MODE_POSITION_ROS;
+			    } else if(localWatchdogs.odom_timeout) {
+			    	ROS_INFO("Cannot switch to position mode: odometry data is old!");
+			    } else if(localWatchdogs.odom_timeout) {
+			    	ROS_INFO("Cannot switch to position mode: joystick data is old!");
 			    }
-		    	FSM.State = FSM.MODE_POSITION_ROS;
 		    pthread_mutex_unlock(&mutexes.FSM);
 		    // e_ROS_PosModeSet = 1;   %Flag that tells the RefPubThread that this mode was just enabled
 		}
-		if(WaitForEvent(joyEvents.buttonX,0) == 0){
-			ROS_INFO("Joystick Position Mode!");
+		if(WaitForEvent(joyEvents.buttonX, 0) == 0){
 		    pthread_mutex_lock(&mutexes.FSM);
-		    	FSM.State = FSM.MODE_POSITION_JOY;
+		    	if((FSM.State != FSM.MODE_POSITION_JOY) && pos_mode_enabled) {
+			    	ROS_INFO("Joystick Position Mode!");
+			    	FSM.State = FSM.MODE_POSITION_JOY;
+			    } else if(localWatchdogs.odom_timeout) {
+			    	ROS_INFO("Cannot switch to position mode: odometry data is old!");
+			    } else if(localWatchdogs.odom_timeout) {
+			    	ROS_INFO("Cannot switch to position mode: joystick data is old!");
+			    }
 		    pthread_mutex_unlock(&mutexes.FSM);
 		}
-		if(WaitForEvent(joyEvents.buttonY,0) == 0){
-			ROS_INFO("Joystick Attitude Mode!");
+		if(WaitForEvent(joyEvents.buttonY, 0) == 0){
 		    pthread_mutex_lock(&mutexes.FSM);
-		    	FSM.State = FSM.MODE_ATTITUDE;
+		    	if(FSM.State != FSM.MODE_ATTITUDE){
+			    	ROS_INFO("Joystick Attitude Mode!");
+			    	FSM.State = FSM.MODE_ATTITUDE;
+			    }
 		    pthread_mutex_unlock(&mutexes.FSM);
 		}
-		if(WaitForEvent(joyEvents.buttonLeft,0) == 0){
+		if(WaitForEvent(joyEvents.buttonStart, 0) == 0){
+		    pthread_mutex_lock(&mutexes.FSM);
+		    	if(FSM.State != FSM.MODE_AUTOLAND){
+			    	ROS_INFO("Autoland Mode!");
+			    	FSM.State = FSM.MODE_AUTOLAND;
+			    }
+		    pthread_mutex_unlock(&mutexes.FSM);
+		}
+		if(WaitForEvent(joyEvents.buttonLeft, 0) == 0){
 			ROS_INFO("SE3 Position Control Mode!");
 		    pthread_mutex_lock(&mutexes.FSM);
 		    	if(FSM.PosControlMode == FSM.POS_CONTROL_LOCAL){
@@ -74,10 +108,10 @@ void FSMTask(){
 			    		ROS_INFO("Joystick reference is in body frame!");
 			    	}
 			    }
-		    	FSM.PosControlMode = FSM.POS_CONTROL_LOCAL;
+			    FSM.PosControlMode = FSM.POS_CONTROL_LOCAL;
 		    pthread_mutex_unlock(&mutexes.FSM);
 		}
-		if(WaitForEvent(joyEvents.buttonRight,0) == 0){
+		if(WaitForEvent(joyEvents.buttonRight, 0) == 0){
 			ROS_INFO("PX4 Position Control Mode!");
 		    pthread_mutex_lock(&mutexes.FSM);
 		    	if(FSM.PosControlMode == FSM.POS_CONTROL_PX4){
@@ -93,42 +127,49 @@ void FSMTask(){
 		    	FSM.PosControlMode = FSM.POS_CONTROL_PX4;
 		    pthread_mutex_unlock(&mutexes.FSM);
 		}
-		if(WaitForEvent(joyEvents.buttonSelect,0) == 0){
+		if(WaitForEvent(joyEvents.buttonSelect, 0) == 0){
 			ROS_INFO("Terminating Node!");
 		    SetEvent(syncEvents.Terminate);
 		}
-		if(WaitForEvent(joyEvents.buttonStart, 0) == 0){
-			ROS_INFO("Landing...");
-		    pthread_mutex_lock(&mutexes.FSM);
-		    	FSM.State = FSM.MODE_AUTOLAND;
-		    pthread_mutex_unlock(&mutexes.FSM);
-		}
 
 		// Events triggered by other threads
-		if(WaitForEvent(triggerEvents.switch2ros_position_mode, 0) == 0) {
-		    pthread_mutex_lock(&mutexes.FSM);
-			    if(FSM.State != FSM.MODE_POSITION_ROS){
-			    	ROS_INFO("ROS Position Mode!");
-			    }
-		    	FSM.State = FSM.MODE_POSITION_ROS;
-		    pthread_mutex_unlock(&mutexes.FSM);
-		}
-		if(WaitForEvent(triggerEvents.switch2joy_position_mode, 0) == 0) {
-			ROS_INFO("Joystick Position Mode!");
-		    pthread_mutex_lock(&mutexes.FSM);
-		    	FSM.State = FSM.MODE_POSITION_JOY;
-		    pthread_mutex_unlock(&mutexes.FSM);
-		}
 		if(WaitForEvent(triggerEvents.disarm_quad, 0) == 0) {
 			ROS_INFO("Disarming...");
 		    pthread_mutex_lock(&mutexes.FSM);
 		    	FSM.State = FSM.MODE_DISARM;
 		    pthread_mutex_unlock(&mutexes.FSM);
 		}
-		if(WaitForEvent(triggerEvents.land_quad, 0) == 0) {
-			ROS_INFO("Landing...");
+		if(WaitForEvent(triggerEvents.switch2ros_position_mode, 0) == 0) {
 		    pthread_mutex_lock(&mutexes.FSM);
-		    	FSM.State = FSM.MODE_AUTOLAND;
+			    if((FSM.State != FSM.MODE_POSITION_ROS) && pos_mode_enabled){
+			    	ROS_INFO("ROS Position Mode!");
+			    	FSM.State = FSM.MODE_POSITION_ROS;
+			    } else if(localWatchdogs.odom_timeout) {
+			    	ROS_INFO("Cannot switch to position mode: odometry data is old!");
+			    } else if(localWatchdogs.odom_timeout) {
+			    	ROS_INFO("Cannot switch to position mode: joystick data is old!");
+			    }
+		    pthread_mutex_unlock(&mutexes.FSM);
+		}
+		if(WaitForEvent(triggerEvents.switch2joy_position_mode, 0) == 0) {
+			ROS_INFO("Joystick Position Mode!");
+		    pthread_mutex_lock(&mutexes.FSM);
+		    	if((FSM.State != FSM.MODE_POSITION_JOY) && pos_mode_enabled) {
+			    	ROS_INFO("Joystick Position Mode!");
+			    	FSM.State = FSM.MODE_POSITION_JOY;
+			    } else if(localWatchdogs.odom_timeout) {
+			    	ROS_INFO("Cannot switch to position mode: odometry data is old!");
+			    } else if(localWatchdogs.odom_timeout) {
+			    	ROS_INFO("Cannot switch to position mode: joystick data is old!");
+			    }
+		    pthread_mutex_unlock(&mutexes.FSM);
+		}
+		if(WaitForEvent(triggerEvents.land_quad, 0) == 0) {
+		    pthread_mutex_lock(&mutexes.FSM);
+		    	if(FSM.State != FSM.MODE_AUTOLAND){
+			    	ROS_INFO("Autoland Mode!");
+			    	FSM.State = FSM.MODE_AUTOLAND;
+			    }
 		    pthread_mutex_unlock(&mutexes.FSM);
 		}
 		if(WaitForEvent(triggerEvents.use_px4_pos_controller, 0) == 0) {
@@ -196,5 +237,5 @@ void FSMTask(){
 	pthread_mutex_lock(&mutexes.threadCount);
         threadCount -= 1;
     pthread_mutex_unlock(&mutexes.threadCount);
-	pthread_exit(NULL);
+	// pthread_exit(NULL);
 }

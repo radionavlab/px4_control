@@ -43,7 +43,7 @@ void joyTaskTimer(){
 	pthread_mutex_lock(&mutexes.threadCount);
         threadCount -= 1;
     pthread_mutex_unlock(&mutexes.threadCount);
-	pthread_exit(NULL);
+	// pthread_exit(NULL);
 }
 
 void joyTask(const double land_speed){
@@ -58,6 +58,7 @@ void joyTask(const double land_speed){
 	Eigen::Vector3d Vel_ref;		//Reference velocity in position control
 	float yawDot;
 	Eigen::Matrix3d Rz;				//Rotation matrix around z axis
+	watchdogTimeouts localWatchdogs;	//Save watchdog data locally
 
 
 	//Max values for maneuvers
@@ -69,15 +70,30 @@ void joyTask(const double land_speed){
 	                maxThrust, xRate, yRate, zRate, PosRefTimeConstant);
 
 
-	//Wait until first message comes in
-	localJoy.seq = -1;
-	while(localJoy.seq <= 0){
-		usleep(1000000);	//Sleep for 1s
-		pthread_mutex_lock(&mutexes.joy);
-	    	localJoy = joy;
-	    pthread_mutex_unlock(&mutexes.joy);
-	    ROS_INFO("Waiting for joystick data...");
+	//Wait until first joystick message comes in
+	while(1) {
+	    //Get watchdog info
+	    pthread_mutex_lock(&mutexes.watchdog);
+	    	localWatchdogs = watchdogs;
+	    pthread_mutex_unlock(&mutexes.watchdog);
+	    if (localWatchdogs.joy_timeout == false) {
+	    	break;
+	    } else {
+	    	ROS_INFO("Waiting for joystick data...");
+	    	ros::Duration(1.0).sleep();
+	    }
 	}
+	// localJoy.seq = -1;
+	// while(localJoy.seq <= 0){
+	// 	usleep(1000000);	//Sleep for 1s
+	// 	pthread_mutex_lock(&mutexes.joy);
+	//     	localJoy = joy;
+	//     pthread_mutex_unlock(&mutexes.joy);
+	//     ROS_INFO("Waiting for joystick data...");
+	// }
+	pthread_mutex_lock(&mutexes.joy);
+		localJoy = joy;
+    pthread_mutex_unlock(&mutexes.joy);
 	prevJoy = localJoy;
 
 
@@ -259,5 +275,5 @@ void joyTask(const double land_speed){
 	pthread_mutex_lock(&mutexes.threadCount);
         threadCount -= 1;
     pthread_mutex_unlock(&mutexes.threadCount);
-	pthread_exit(NULL);
+	// pthread_exit(NULL);
 }

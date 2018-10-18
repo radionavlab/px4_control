@@ -22,7 +22,7 @@ void commPubTimer(){
 	pthread_mutex_lock(&mutexes.threadCount);
         threadCount -= 1;
     pthread_mutex_unlock(&mutexes.threadCount);
-	pthread_exit(NULL);
+	// pthread_exit(NULL);
 }
 
 void commPubTask(){
@@ -152,6 +152,6 @@ ROS_INFO("Command Publisher started!");
 	pthread_mutex_lock(&mutexes.threadCount);
         threadCount -= 1;
     pthread_mutex_unlock(&mutexes.threadCount);
-	pthread_exit(NULL);
+	// pthread_exit(NULL);
 
 }

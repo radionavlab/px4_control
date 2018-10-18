@@ -5,7 +5,7 @@ void initializePVA(PVA_structure &PVA){
 }
 
 void initializeJoy(joyStruct &Joy){
-	Joy.seq = 0;
+	Joy.stamp = ros::Time(0.0);
 	Joy.buttonA = 0;
 	Joy.buttonB = 0;
 	Joy.buttonX = 0;
@@ -100,6 +100,7 @@ void initializeMutexes(mutexStruct &mutexes){
 	pthread_mutex_init(&mutexes.threadCount, NULL);
 	pthread_mutex_init(&mutexes.PID_Pos, NULL);
 	pthread_mutex_init(&mutexes.PID_Param, NULL);
+	pthread_mutex_init(&mutexes.watchdog, NULL);
 }
 
 void destroyMutexes(mutexStruct &mutexes){
@@ -113,6 +114,7 @@ void destroyMutexes(mutexStruct &mutexes){
 	pthread_mutex_destroy(&mutexes.threadCount);
 	pthread_mutex_destroy(&mutexes.PID_Pos);
 	pthread_mutex_destroy(&mutexes.PID_Param);
+	pthread_mutex_destroy(&mutexes.watchdog);
 }
 
 void initializeStateMachine(StateMachine &FSM){

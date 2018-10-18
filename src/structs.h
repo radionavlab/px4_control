@@ -21,7 +21,7 @@ struct PVA_structure{
 
 //Incoming data from joysticks
 struct joyStruct{
-	int seq; //Sequence of the message
+	ros::Time stamp; //Time at which message was received
 	int buttonA;
 	int buttonB;
 	int buttonX;
@@ -41,6 +41,11 @@ struct joyStruct{
 	double RstickVer;
 	double L2;
 	double R2;
+};
+
+struct watchdogTimeouts{
+	bool odom_timeout = true;
+	bool joy_timeout = true;
 };
 
 //Event handlers that are triggered when joystick buttons are pushed
@@ -89,6 +94,7 @@ struct mutexStruct{
 	pthread_mutex_t threadCount;
 	pthread_mutex_t PID_Pos;
 	pthread_mutex_t PID_Param;
+	pthread_mutex_t watchdog;
 };
 
 //Data for state machine

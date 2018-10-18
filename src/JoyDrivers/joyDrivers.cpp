@@ -4,7 +4,7 @@
 joyStruct driverXboxOne(sensor_msgs::Joy msg){
 	joyStruct joy;
 
-	joy.seq = msg.header.seq;
+	joy.stamp = ros::Time::now();
 	joy.buttonA = msg.buttons[0];
 	joy.buttonB = msg.buttons[1];
 	joy.buttonX = msg.buttons[2];
@@ -53,7 +53,7 @@ joyStruct driverXboxOne(sensor_msgs::Joy msg){
 joyStruct driverXbox360(sensor_msgs::Joy msg){
 	joyStruct joy;
 
-	joy.seq = msg.header.seq;
+	joy.stamp = ros::Time::now();
 	joy.buttonA = msg.buttons[0];
 	joy.buttonB = msg.buttons[1];
 	joy.buttonX = msg.buttons[2];
@@ -80,7 +80,7 @@ joyStruct driverXbox360(sensor_msgs::Joy msg){
 joyStruct driverXbox360Wired(sensor_msgs::Joy msg){
 	joyStruct joy;
 
-	joy.seq = msg.header.seq;
+	joy.stamp = ros::Time::now();
 	joy.buttonA = msg.buttons[0];
 	joy.buttonB = msg.buttons[1];
 	joy.buttonX = msg.buttons[2];
@@ -181,7 +181,7 @@ PVA_structure filterJoy(PVA_structure PVA_ref,
 
 void printJoyValues(joyStruct joy){
 
-	std::cout << "Buttons" << "\t" << joy.seq << "\n";
+	std::cout << "Time: " << "\t" << joy.stamp.toSec() << "\n";
 	std::cout << "Buttons" << "\t";
 	std::cout << joy.buttonA << " " << joy.buttonB << " "
 	          << joy.buttonX << " "<< joy.buttonY << " "

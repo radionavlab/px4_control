@@ -7,6 +7,7 @@
 #include "Threads/FSMTask.h"
 #include "Threads/joyTask.h"
 #include "Threads/commPub.h"
+#include "Threads/watchdogs.h"
 #include "Services/services.h"
 #include "Actions/actions.h"
 #include <mg_msgs/follow_PVAJS_trajectoryAction.h>
@@ -29,6 +30,7 @@ int threadCount = 0;
 PID_3DOF PosPID;
 PosControlParam ControlParam;
 std::string odomTopic, joyDriver, pvaTopic;
+watchdogTimeouts watchdogs;
 
 int main(int argc, char **argv)
 {
@@ -154,6 +156,8 @@ int main(int argc, char **argv)
   std::thread h_joyThread;      //Joystick thread
   std::thread h_commPubTimer;   //Timer for command publisher
   std::thread h_commPubThread;  //Command publisher thread
+  std::thread h_odomWatchdog;   //Watchdog to verify whether odometry messages are recent
+  std::thread h_joyWatchdog;    //Watchdog to verify whether joystick messages are recent
 
   //Start  finite state machine
   h_FSMThread = std::thread(FSMTask);
@@ -174,6 +178,14 @@ int main(int argc, char **argv)
   //Start command publisher thread
   h_commPubThread = std::thread(commPubTask);
   threadCount += 1;
+
+  //Start watchdog threads
+  const double timeout = 1.0; // 1 seccond timeout
+  h_odomWatchdog = std::thread(odomWatchdog, timeout);
+  h_joyWatchdog = std::thread(joyWatchdog, timeout);
+  threadCount += 1;  
+
+
 
   //Start loop ----------------------------------------------------
   ros::Rate loop_rate(500);
