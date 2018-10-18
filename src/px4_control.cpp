@@ -55,6 +55,11 @@ int main(int argc, char **argv)
   ros::param::get("px4_control_node/joyDriver", joyDriver);
   ros::param::get("px4_control_node/pvaTopic", pvaTopic);
 
+  //Get timeout values
+  double joyTimeout, odomTimeout;
+  ros::param::get("px4_control_node/joystickTimeout", joyTimeout);
+  ros::param::get("px4_control_node/odometryTimeout", odomTimeout);
+
   // Autoland speed
   double land_speed;
   ros::param::get("px4_control_node/land_speed", land_speed);
@@ -180,9 +185,8 @@ int main(int argc, char **argv)
   threadCount += 1;
 
   //Start watchdog threads
-  const double timeout = 1.0; // 1 seccond timeout
-  h_odomWatchdog = std::thread(odomWatchdog, timeout);
-  h_joyWatchdog = std::thread(joyWatchdog, timeout);
+  h_odomWatchdog = std::thread(odomWatchdog, odomTimeout);
+  h_joyWatchdog = std::thread(joyWatchdog, joyTimeout);
   threadCount += 1;  
 
 
