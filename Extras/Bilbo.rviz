@@ -6,8 +6,8 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /GazeboPoseRef1
-        - /GazeboOdom1
+        - /BilboPoseRef1
+        - /BilboOdom1
       Splitter Ratio: 0.5
     Tree Height: 1107
   - Class: rviz/Selection
@@ -58,7 +58,7 @@ Visualization Manager:
       Enabled: true
       Head Length: 0.300000012
       Head Radius: 0.100000001
-      Name: GazeboPoseRef
+      Name: BilboPoseRef
       Shaft Length: 1
       Shaft Radius: 0.0500000007
       Shape: Axes
@@ -84,7 +84,7 @@ Visualization Manager:
         Value: true
       Enabled: true
       Keep: 10
-      Name: GazeboOdom
+      Name: BilboOdom
       Position Tolerance: 9.99999975e-05
       Shape:
         Alpha: 1
@@ -101,7 +101,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /Gazebo/waypoint_visualization_markers
+      Marker Topic: /Bilbo/waypoint_visualization_markers
       Name: MarkerArray
       Namespaces:
         {}
@@ -109,7 +109,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /Gazebo/path_visualization_markers
+      Marker Topic: /Bilbo/path_visualization_markers
       Name: MarkerArray
       Namespaces:
         {}

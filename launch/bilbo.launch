@@ -4,7 +4,8 @@
     <arg name="tgt_system" default="1" />
     <arg name="tgt_component" default="1" />
     <arg name="log_output" default="screen" />
-    <group ns="Bilbo">
+    <arg name="namespace" default="Bilbo" />
+    <group ns="$(arg namespace)">
         <!-- <include file="$(find px4_control)/launch/joy.launch"> </include> -->
         <include file="$(find px4_control)/launch/360_group.launch"> </include>
         <!-- <include file="$(find gps_kf)/launch/gps_group.launch"> </include> -->
@@ -20,8 +21,9 @@
     </group>
 
     <node name="bilbo_joy" pkg="topic_tools" type="relay"
-            args="/joy /Bilbo/joy" />
+            args="/joy /$(arg namespace)/joy" />
 
     <!-- Launch RVIZ -->
-    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find px4_control)/Extras/bilbo.rviz"/>
+    <node pkg="rviz" type="rviz" name="rviz" 
+            args="-d $(find px4_control)/Extras/$(arg namespace).rviz"/>
 </launch>

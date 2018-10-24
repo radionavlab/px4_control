@@ -1,5 +1,6 @@
 <launch>
-    <group ns="Gazebo">
+    <arg name="namespace" default="Gazebo" />
+    <group ns="$(arg namespace)">
         <include file="$(find px4_control)/launch/360_group_gazebo.launch"> </include>
     </group>
 
@@ -10,8 +11,9 @@
     </node>
 
     <node name="gazebo_joy" pkg="topic_tools" type="relay"
-            args="/joy /Gazebo/joy" />
+            args="/joy /$(arg namespace)/joy" />
 
     <!-- Launch RVIZ -->
-    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find px4_control)/Extras/bilbo.rviz"/>
+    <node pkg="rviz" type="rviz" name="rviz" 
+            args="-d $(find px4_control)/Extras/$(arg namespace).rviz"/>
 </launch>
