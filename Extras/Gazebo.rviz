@@ -100,7 +100,7 @@ Visualization Manager:
       Marker Topic: /Gazebo/waypoint_visualization_markers
       Name: WaypointArray
       Namespaces:
-        path: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -108,10 +108,7 @@ Visualization Manager:
       Marker Topic: /Gazebo/path_visualization_markers
       Name: Trajectory
       Namespaces:
-        acceleration: true
-        path: true
-        pose: true
-        velocity: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/Image
@@ -208,7 +205,7 @@ Visualization Manager:
       Marker Topic: /Gazebo/mapper_node/mapper/obstacle_markers
       Name: Obstacles
       Namespaces:
-        obstacleMap: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/Marker
@@ -216,7 +213,7 @@ Visualization Manager:
       Marker Topic: /Gazebo/mapper_node/mapper/frustum_markers
       Name: Marker
       Namespaces:
-        fustrum/Gazebo/camera_link: true
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
@@ -244,25 +241,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 14.9525957
+      Distance: 16.7469063
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -3.01362014
-        Y: 7.57109261
-        Z: 2.50877833
+        X: -2.48003173
+        Y: 6.72666168
+        Z: 1.71929932
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.439796448
+      Pitch: 0.514796495
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.97863412
+      Yaw: 4.16863441
     Saved: ~
 Window Geometry:
   Depth Camera:

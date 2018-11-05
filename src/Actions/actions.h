@@ -2,6 +2,7 @@
 #include <actionlib/server/simple_action_server.h>
 #include <mg_msgs/follow_PVAJS_trajectoryAction.h>
 #include "../globals.h"
+#include "../HelperFunctions/helper.h"
 
 
 class follow_PVAJS_trajectoryAction
@@ -75,7 +76,15 @@ public:
         as_.setPreempted();
 
         // Set quad to stop by switching to joy position mode
-        SetEvent(triggerEvents.switch2joy_position_mode);
+        // SetEvent(triggerEvents.switch2joy_position_mode);
+
+        // Fill in the PVA structure
+        pthread_mutex_lock(&mutexes.PVA_ros);
+          PVA_Ros.Pos = flatStates.PVAJS_array[i].Pos;
+          PVA_Ros.Vel = ZeroVector3();
+          PVA_Ros.Acc = ZeroVector3();
+          PVA_Ros.yaw = 0.0;
+        pthread_mutex_unlock(&mutexes.PVA_ros); 
 
         success = false;
         break;

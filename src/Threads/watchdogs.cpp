@@ -32,6 +32,11 @@ void odomWatchdog(const double &timeout) {
 	    	localFSM = FSM;
 	    pthread_mutex_unlock(&mutexes.FSM);
 
+	    if (ros::Time::now().toSec() <= 0) {
+	    	r.sleep();
+	    	continue;
+	    }
+
 	    // ROS_WARN("watchdog: last measurement: %4.2f seconds ago", (ros::Time::now() - localOdom.header.stamp).toSec());
 	    if ((ros::Time::now() - localOdom.header.stamp).toSec() > timeout) {
 	    	if(localWatchdogs.odom_timeout == false)  {
@@ -103,7 +108,14 @@ void joyWatchdog(const double &timeout) {
 	    	localFSM = FSM;
 	    pthread_mutex_unlock(&mutexes.FSM);
 
-	    // ROS_WARN("watchdog: last measurement: %4.2f seconds ago", (ros::Time::now() - localJoy.header.stamp).toSec());
+	    if (ros::Time::now().toSec() <= 0) {
+	    	r.sleep();
+	    	continue;
+	    }
+
+	    // ROS_INFO("Time now: %f", ros::Time::now().toSec());
+	    // ROS_INFO("Time joy: %f", localJoy.stamp.toSec());
+	    // ROS_WARN("watchdog: last measurement: %4.2f seconds ago", (ros::Time::now() - localJoy.stamp).toSec());
 	    if ((ros::Time::now() - localJoy.stamp).toSec() > timeout) {
 	    	if(localWatchdogs.joy_timeout == false)  {
 	    		if((localFSM.State == localFSM.MODE_POSITION_JOY) ||
@@ -130,6 +142,8 @@ void joyWatchdog(const double &timeout) {
 		    	watchdogs.joy_timeout = false;
 		    pthread_mutex_unlock(&mutexes.watchdog);
 	    }
+
+	    // ROS_INFO("Joy status: %d", int(watchdogs.joy_timeout));
 
 		r.sleep();
 	}

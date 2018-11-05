@@ -101,7 +101,7 @@ void joyTask(const double land_speed){
 
 	ros::Time t_prev = ros::Time::now();
 	ros::Time t_now = ros::Time::now();
-	ros::Duration dt;
+	ros::Duration dt(0.0);
 
 	while(1){
 		WaitForEvent(syncEvents.Joy_trigger,500);
