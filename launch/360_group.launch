@@ -27,7 +27,7 @@
     <param name="pvaTopic" value="px4_control/PVA_Ref"/>
     
     <!-- Position Control parameters -->
-    <param name="mass" value="0.7623"/>       <!-- kg -->
+    <param name="mass" value="0.772"/>       <!-- kg -->
     <param name="gz" value="9.81"/>          <!-- m/s^2 -->
     <param name="thrustRatio" value="1.60"/>  <!-- maxThrust/Weight -->
     <param name="kpx" value="2.05"/>  <!--3.0-->
