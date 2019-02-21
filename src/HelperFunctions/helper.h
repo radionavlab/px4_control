@@ -45,6 +45,9 @@ float normPoint(geometry_msgs::Point Pt);
 //Function to print the values of a ROS Point (debug purposes)
 void printPoint(geometry_msgs::Point Pt);
 
+// Convert ros point to eigen vector
+Eigen::Vector3d rosPoint2eigenVector(const geometry_msgs::Point & p);
+
 //Function to copy a ROS Point into a ROS Vector3 structure
 geometry_msgs::Vector3 Point_2_Vec3(geometry_msgs::Point Pt);
 

@@ -49,14 +49,14 @@ public:
     StateMachine localFSM;      //Save state machine data locally
     ros::Time t0 = ros::Time::now();
     do {
-      ros::Duration(0.01).sleep();
 
-      if ((ros::Time::now() - t0).toSec() > 2.0) {
+      if ((ros::Time::now() - t0).toSec() > 5.0) {
           ROS_ERROR("[%s] px4_control_node is taking too long to switch to PVA mode! Aborting...",
                      action_name_.c_str());
           return;
       }
 
+      r.sleep();
       pthread_mutex_lock(&mutexes.FSM);
         localFSM = FSM;
       pthread_mutex_unlock(&mutexes.FSM);

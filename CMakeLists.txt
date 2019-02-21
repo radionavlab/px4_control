@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(px4_control)
 
-option(USE_KINETIC "Use kinetic version instead of indigo version" TRUE) # TRUE/FALSE
+option(USE_KINETIC "Use kinetic version instead of indigo version" FALSE) # TRUE/FALSE
 
 ## Add support for C++11, supported in ROS Kinetic and newer
 add_definitions(-std=c++11)
@@ -29,10 +29,6 @@ find_package(Eigen REQUIRED)
 catkin_package(
 	DEPENDS Eigen
   CATKIN_DEPENDS mg_msgs
-#  INCLUDE_DIRS include
-#  LIBRARIES px4_control
-#  CATKIN_DEPENDS geometry_msgs mavros_msgs nav_msgs roscpp std_msgs visualization_msgs
-#  DEPENDS system_lib
 )
 
 
@@ -47,11 +43,13 @@ if(USE_KINETIC)
                    src/px4_control.cpp 
                    src/HelperFunctions/helper.cpp
                    src/HelperFunctions/QuatRotEuler.cpp
+                   src/HelperFunctions/visualization_functions.cpp
                    src/Callbacks/callbacks.cpp
                    src/Threads/FSMTaskKinetic.cpp
                    src/Threads/joyTask.cpp
                    src/Threads/commPubKinetic.cpp
                    src/Threads/watchdogs.cpp
+                   src/Threads/visualization_thread.cpp
                    src/PosControl/PosControlKinetic.cpp
                    src/JoyDrivers/joyDrivers.cpp
                    src/pevents/pevents.cpp
@@ -68,11 +66,13 @@ else()
                    src/px4_control.cpp 
                    src/HelperFunctions/helper.cpp
                    src/HelperFunctions/QuatRotEuler.cpp
+                   src/HelperFunctions/visualization_functions.cpp
                    src/Callbacks/callbacks.cpp
                    src/Threads/FSMTask.cpp
                    src/Threads/joyTask.cpp
                    src/Threads/commPub.cpp
                    src/Threads/watchdogs.cpp
+                   src/Threads/visualization_thread.cpp
                    src/JoyDrivers/joyDrivers.cpp
                    src/PosControl/PosControl.cpp
                    src/pevents/pevents.cpp

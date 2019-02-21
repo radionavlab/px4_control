@@ -161,6 +161,10 @@ geometry_msgs::Quaternion rot2quat(Eigen::Matrix3d M){
     return quat;	
 }
 
+Eigen::Quaterniond ros2eigenquat(const geometry_msgs::Quaternion & q) {
+  return Eigen::Quaterniond(q.w, q.x, q.y, q.z);
+}
+
 Eigen::Matrix3d rotx(double theta){
 	Eigen::Matrix3d R;
 

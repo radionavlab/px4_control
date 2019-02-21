@@ -95,6 +95,7 @@ struct mutexStruct{
 	pthread_mutex_t PID_Pos;
 	pthread_mutex_t PID_Param;
 	pthread_mutex_t watchdog;
+	pthread_mutex_t rviz_pose_ref;
 };
 
 //Data for state machine

@@ -30,6 +30,7 @@
         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
         <!-- Tf server for updating vehicles tf's -->
         <node pkg="tf_publisher" type="tf_publisher" name="tf_publisher" output="screen">
+            <param name="namespace" value="$(arg namespace)"/>
             <param name="input_odometry" value="/$(arg namespace)/local_odom"/>
         </node>
     </group>
@@ -39,5 +40,5 @@
 
     <!-- Launch RVIZ -->
     <node pkg="rviz" type="rviz" name="rviz"
-            args="-d $(find px4_control)/Extras/$(arg namespace).rviz"/>
+            args="-d $(find px4_control)/Extras/$(arg namespace)Inspection.rviz"/>
 </launch>

@@ -101,6 +101,7 @@ void initializeMutexes(mutexStruct &mutexes){
 	pthread_mutex_init(&mutexes.PID_Pos, NULL);
 	pthread_mutex_init(&mutexes.PID_Param, NULL);
 	pthread_mutex_init(&mutexes.watchdog, NULL);
+	pthread_mutex_init(&mutexes.rviz_pose_ref, NULL);
 }
 
 void destroyMutexes(mutexStruct &mutexes){
@@ -115,6 +116,7 @@ void destroyMutexes(mutexStruct &mutexes){
 	pthread_mutex_destroy(&mutexes.PID_Pos);
 	pthread_mutex_destroy(&mutexes.PID_Param);
 	pthread_mutex_destroy(&mutexes.watchdog);
+	pthread_mutex_destroy(&mutexes.rviz_pose_ref);
 }
 
 void initializeStateMachine(StateMachine &FSM){

@@ -26,6 +26,7 @@ extern PID_3DOF PosPID;
 extern PosControlParam ControlParam;
 extern watchdogTimeouts watchdogs;
 extern double land_speed;
+extern geometry_msgs::PoseStamped RvizPoseRef_;
 
 // Mutexes
 extern mutexStruct mutexes;

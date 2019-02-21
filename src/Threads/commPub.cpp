@@ -144,6 +144,10 @@ ROS_INFO("Command Publisher started!");
 		RvizPoseRef.header.frame_id = "map";
 		RvizPosPub.publish(RvizPoseRef);
 
+		pthread_mutex_lock(&mutexes.rviz_pose_ref);
+			RvizPoseRef_ = RvizPoseRef;
+		pthread_mutex_unlock(&mutexes.rviz_pose_ref);
+
    		count += 1;
 	}
 

@@ -35,6 +35,9 @@ Eigen::Matrix3d quat2rot(geometry_msgs::Quaternion quat);
 //Function to convert a rotation matrix to quaternion
 geometry_msgs::Quaternion rot2quat(Eigen::Matrix3d R);
 
+// Function to convert from ROS quaternion to Eigen quaternion
+Eigen::Quaterniond ros2eigenquat(const geometry_msgs::Quaternion & q);
+
 //Rotation matrix for a rotation about the x-axis
 Eigen::Matrix3d rotx(double theta);
 

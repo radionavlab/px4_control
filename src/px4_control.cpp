@@ -8,6 +8,7 @@
 #include "Threads/joyTask.h"
 #include "Threads/commPub.h"
 #include "Threads/watchdogs.h"
+#include "Threads/visualization_thread.h"
 #include "Services/services.h"
 #include "Actions/actions.h"
 #include <mg_msgs/follow_PVAJS_trajectoryAction.h>
@@ -16,7 +17,7 @@
 
 
 // Global variables
-PVA_structure PVA_ref;        //Joystick references
+PVA_structure PVA_ref;    //Joystick references
 mg_msgs::PVA PVA_Ros;     //References from topic
 mavros_msgs::State PX4state;
 nav_msgs::Odometry odom;
@@ -31,6 +32,7 @@ PID_3DOF PosPID;
 PosControlParam ControlParam;
 std::string odomTopic, joyDriver, pvaTopic;
 watchdogTimeouts watchdogs;
+geometry_msgs::PoseStamped RvizPoseRef_;
 
 int main(int argc, char **argv)
 {
@@ -64,6 +66,10 @@ int main(int argc, char **argv)
   double land_speed;
   ros::param::get("px4_control_node/land_speed", land_speed);
 
+  // Get namespace
+  std::string ns;
+  ros::param::get("px4_control_node/namespace", ns);
+
   //Create services ------------------------------------------
   ros::ServiceServer PID_srv = n.advertiseService("px4_control_node/updatePosControlParam", updatePosControlParam);
   ros::ServiceServer Param_srv = n.advertiseService("px4_control_node/updateQuadParam", updateSystemParam);
@@ -89,71 +95,6 @@ int main(int argc, char **argv)
   ROS_INFO("PvaSub topic: %s", PvaSub.getTopic().c_str());
   ROS_INFO("joySub topic: %s", joySub.getTopic().c_str());
 
-  // I'll leave this portion commented until I can certify that the quad can compile C++11
-  // //Threads --------------------------------------------------
-  // pthread_t h_FSMThread;      //Finite state machine
-  // pthread_t h_joyThreadTimer; //Timer for joystick thread
-  // pthread_t h_joyThread;      //Joystick thread
-  // pthread_t h_commPubTimer;   //Timer for command publisher
-  // pthread_t h_commPubThread;  //Command publisher thread
-  // int ReturnCode;
-
-  // //Start  finite state machine
-  // if (ReturnCode = pthread_create(&h_FSMThread, NULL, FSMTask, NULL)){
-  //   printf("Start State Machine failed; return code from pthread_create() is %d\n", ReturnCode);
-  //   exit(-1);
-  // }
-  // else{
-  //   pthread_mutex_lock(&mutexes.threadCount);
-  //       threadCount += 1;
-  //   pthread_mutex_unlock(&mutexes.threadCount);
-  // }
-
-  // //Start joystick timer thread
-  // if (ReturnCode = pthread_create(&h_joyThreadTimer, NULL, joyTaskTimer, NULL)){
-  //   printf("Start joystick timer thread failed; return code from pthread_create() is %d\n", ReturnCode);
-  //   exit(-1);
-  // }
-  // else{
-  //   pthread_mutex_lock(&mutexes.threadCount);
-  //       threadCount += 1;
-  //   pthread_mutex_unlock(&mutexes.threadCount);
-  // }
-
-
-  // //Start joystick thread
-  // if (ReturnCode = pthread_create(&h_joyThread, NULL, joyTask, NULL)){
-  //   printf("Start joystick thread failed; return code from pthread_create() is %d\n", ReturnCode);
-  //   exit(-1);
-  // }
-  // else{
-  //   pthread_mutex_lock(&mutexes.threadCount);
-  //       threadCount += 1;
-  //   pthread_mutex_unlock(&mutexes.threadCount);
-  // }
-
-  //   //Start command publisher timer thread
-  // if (ReturnCode = pthread_create(&h_commPubTimer, NULL, commPubTimer, NULL)){
-  //   printf("Start command publisher timer thread failed; return code from pthread_create() is %d\n", ReturnCode);
-  //   exit(-1);
-  // }
-  // else{
-  //   pthread_mutex_lock(&mutexes.threadCount);
-  //       threadCount += 1;
-  //   pthread_mutex_unlock(&mutexes.threadCount);
-  // }
-
-
-  // //Start command publisher thread
-  // if (ReturnCode = pthread_create(&h_commPubThread, NULL, commPubTask, NULL)){
-  //   printf("Start command publisher thread failed; return code from pthread_create() is %d\n", ReturnCode);
-  //   exit(-1);
-  // }
-  // else{
-  //   pthread_mutex_lock(&mutexes.threadCount);
-  //       threadCount += 1;
-  //   pthread_mutex_unlock(&mutexes.threadCount);
-  // }
 
   //Threads --------------------------------------------------
   std::thread h_FSMThread;      //Finite state machine
@@ -163,6 +104,7 @@ int main(int argc, char **argv)
   std::thread h_commPubThread;  //Command publisher thread
   std::thread h_odomWatchdog;   //Watchdog to verify whether odometry messages are recent
   std::thread h_joyWatchdog;    //Watchdog to verify whether joystick messages are recent
+  std::thread h_rvizThread;     //Thread for publishing quadcopter meshes into Rviz
 
   //Start  finite state machine
   h_FSMThread = std::thread(FSMTask);
@@ -187,6 +129,11 @@ int main(int argc, char **argv)
   //Start watchdog threads
   h_odomWatchdog = std::thread(odomWatchdog, odomTimeout);
   h_joyWatchdog = std::thread(joyWatchdog, joyTimeout);
+  threadCount += 2;  
+
+  // Start mesh visualization thread
+  double rviz_rate = 30;
+  h_rvizThread = std::thread(VisualizationThread, rviz_rate, ns);
   threadCount += 1;  
 
 

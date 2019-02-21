@@ -1,7 +1,9 @@
 <launch>
     <arg name="namespace" default="Gazebo" />
     <group ns="$(arg namespace)">
-        <include file="$(find px4_control)/launch/360_group_gazebo.launch"> </include>
+        <include file="$(find px4_control)/launch/360_group.launch"> 
+            <arg name="namespace" value="$(arg namespace)" />
+        </include>
     </group>
 
     <node respawn="true" pkg="joy" type="joy_node" name="joy" >
