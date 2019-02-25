@@ -28,6 +28,10 @@ void updateErrorPID3(PID_3DOF &PID,
 //Calculate output of PID
 Eigen::Vector3d outputPID3(PID_3DOF PID);
 
+//3D saturation for vectors about symmetric hinge
+Eigen::Vector3d saturationF(Eigen::Vector3d vec,
+							Eigen::Vector3d hinge);
+
 //Initialize parameters for position control
 void initializePosControlParam(PosControlParam &Param,
 	                           double mass, double gz,

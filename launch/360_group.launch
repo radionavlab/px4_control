@@ -42,5 +42,8 @@
     <param name="maxInteg_x" value="15.0"/>
     <param name="maxInteg_y" value="15.0"/>
     <param name="maxInteg_z" value="15.0"/>
+    <param name="maxPID_x" value="10.0"/>
+    <param name="maxPID_y" value="10.0"/>
+    <param name="maxPID_z" value="10.0"/>
   </node>
 </launch>

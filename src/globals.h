@@ -24,3 +24,4 @@ extern StateMachine FSM;
 extern int threadCount;
 extern PID_3DOF PosPID;
 extern PosControlParam ControlParam;
+extern Eigen::Vector3d pidSaturation;

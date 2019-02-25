@@ -48,11 +48,38 @@ void updateErrorPID3(PID_3DOF &PID,
 //Calculate output of PID
 Eigen::Vector3d outputPID3(PID_3DOF PID){
 	Eigen::Vector3d PID_out;
-	PID_out =  PID.feedForward + 
-			   PID.e_prop.cwiseProduct(PID.K_p) + 
-			   PID.e_deriv.cwiseProduct(PID.K_d) + 
-			   PID.e_integ.cwiseProduct(PID.K_i);		
+	Eigen::Vector3d pidTot;
+	pidTot   =  PID.e_prop.cwiseProduct(PID.K_p) + 
+				PID.e_deriv.cwiseProduct(PID.K_d) + 
+				PID.e_integ.cwiseProduct(PID.K_i);
+	pidTot = saturationF(pidTot, pidSaturation);
+	PID_out =  PID.feedForward + pidTot;
+
 	return PID_out;
+}
+
+//Generic 3d saturation function
+Eigen::Vector3d saturationF(Eigen::Vector3d vec,
+							Eigen::Vector3d hinge)
+{
+	Eigen::Vector3d vecSaturated;
+	for(int ij=0; ij<3; ij++)
+	{
+		if(hinge(ij) > 10^-5) //hinge of 0 is not used
+		{
+			if(vec(ij) > hinge(ij))
+			{
+				vecSaturated(ij) = hinge(ij);
+			}else if(vec(ij) < -hinge(ij))
+			{
+				vecSaturated(ij) = -hinge(ij);
+			}else
+			{
+				vecSaturated(ij) = vec(ij);
+			}
+		}
+	}
+	return vecSaturated;
 }
 
 //Initialize parameters for position control
@@ -68,7 +95,7 @@ void initializePosControlParam(PosControlParam &Param,
 void readROSparameterServer(PID_3DOF &PID, PosControlParam &Param){
 
   double mass, gz, thrustRatio;
-  Eigen::Vector3d Kp, Ki, Kd, maxInteg; 
+  Eigen::Vector3d Kp, Ki, Kd, maxInteg, pidSat;
 
   //Get system properties
   ros::param::get("px4_control_node/mass", mass);
@@ -90,6 +117,12 @@ void readROSparameterServer(PID_3DOF &PID, PosControlParam &Param){
   ros::param::get("px4_control_node/maxInteg_y", maxInteg[1]);
   ros::param::get("px4_control_node/maxInteg_z", maxInteg[2]);
   updateControlParamPID3(PID, Kp, Ki, Kd, maxInteg);
+
+  //Get PID saturation limits
+  ros::param::get("px4_control_node/maxPID_x", pidSat[0]);
+  ros::param::get("px4_control_node/maxPID_y", pidSat[1]);
+  ros::param::get("px4_control_node/maxPID_z", pidSat[2]);
+  pidSaturation = pidSat;
 
   //Print all parameter values
   ROS_INFO("mass: %f\tgz: %f\tthrustRatio: %f", mass, gz, thrustRatio);
