@@ -3,7 +3,7 @@
     <arg name="namespace" default="Frodo" />
 
     <!-- MAVROS parameters -->
-    <arg name="fcu_url" default="udp://:14550@192.168.1.56:14556"/>
+    <arg name="fcu_url" default="udp://:14556@192.168.1.30:14550"/>
     <arg name="gcs_url" default="" />
     <arg name="tgt_system" default="1" />
     <arg name="tgt_component" default="1" />

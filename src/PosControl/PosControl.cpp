@@ -31,27 +31,26 @@ void updateErrorPID3(PID_3DOF &PID,
 	                Eigen::Vector3d feedForward, 
 	                Eigen::Vector3d e_prop, 
 	                Eigen::Vector3d e_deriv, 
+	                Eigen::Matrix3d Rbw,
 	                float dt){
 	PID.feedForward = feedForward;
 	PID.e_prop = e_prop;
 	PID.e_deriv = e_deriv;
-	PID.e_integ = PID.e_integ+(e_prop*dt); //e_integ = e_integ + e_prop*dt
+	PID.e_integ = PID.e_integ+(Rbw*e_prop*dt); //e_integ = e_integ + e_prop*dt
 
 	//Saturate integral error between lower and upper bounds
 	for (int i = 0; i < 3; i++){
-		PID.e_integ(i) = saturate(PID.e_integ(i), 
-			                     -PID.maxInteg(i), 
-			                      PID.maxInteg(i));
+		PID.e_integ(i) = saturate(PID.e_integ(i), -PID.maxInteg(i), PID.maxInteg(i));
 	}
 }
 
 //Calculate output of PID
-Eigen::Vector3d outputPID3(PID_3DOF PID){
+Eigen::Vector3d outputPID3(PID_3DOF PID, Eigen::Matrix3d Rbw){
 	Eigen::Vector3d PID_out;
 	PID_out =  PID.feedForward + 
 			   PID.e_prop.cwiseProduct(PID.K_p) + 
 			   PID.e_deriv.cwiseProduct(PID.K_d) + 
-			   PID.e_integ.cwiseProduct(PID.K_i);		
+			   Rbw.transpose()*PID.e_integ.cwiseProduct(PID.K_i);		
 	return PID_out;
 }
 
@@ -162,8 +161,8 @@ void PosController(nav_msgs::Odometry Odom,
 	
 	//Translational controller
 	feedForward = m*gz*z_w + m*AccRef;
-	updateErrorPID3(PosPID, feedForward, e_Pos, e_Vel, dt);
-	Fdes = outputPID3(PosPID);
+	updateErrorPID3(PosPID, feedForward, e_Pos, e_Vel, Rbw, dt);
+	Fdes = outputPID3(PosPID, Rbw);
 	//ROS_INFO("fdes= %f  %f  %f",Fdes(0),Fdes(1),Fdes(2));
 
 	//Desired thrust in body frame. Outputs thrust as a fraction of max thrust

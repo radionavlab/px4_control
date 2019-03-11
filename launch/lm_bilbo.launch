@@ -1,16 +1,22 @@
 <launch>
-    <arg name="fcu_url" default="udp://:14530@192.168.1.40:14540"/>
+
+    <arg name="namespace" default="Bilbo" />
+
+    <!-- MAVROS parameters -->
+    <arg name="fcu_url" default="udp://:14530@192.168.1.45:14540"/>
     <arg name="gcs_url" default="" />
     <arg name="tgt_system" default="1" />
     <arg name="tgt_component" default="1" />
     <arg name="log_output" default="screen" />
-    <arg name="namespace" default="Bilbo" />
+    
+    <!-- Launch nodes -->
     <group ns="$(arg namespace)">
-        <!-- <include file="$(find px4_control)/launch/joy.launch"> </include> -->
+        <!-- px4_control -->
         <include file="$(find px4_control)/launch/lm_group.launch"> 
             <arg name="namespace" value="$(arg namespace)" />
         </include>
-        <!-- <include file="$(find gps_kf)/launch/gps_group.launch"> </include> -->
+
+        <!-- MAVROS -->
         <include file="$(find mavros)/launch/node.launch">
             <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
             <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
@@ -20,12 +26,19 @@
             <arg name="tgt_component" value="$(arg tgt_component)" />
             <arg name="log_output" value="$(arg log_output)" />
         </include>
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- Tf server for updating vehicles tf's -->
+        <node pkg="tf_publisher" type="tf_publisher" name="tf_publisher" output="screen">
+            <param name="namespace" value="$(arg namespace)"/>
+            <param name="input_odometry" value="/$(arg namespace)/local_odom"/>
+        </node>
     </group>
 
-    <node name="bilbo_joy" pkg="topic_tools" type="relay"
-            args="/joy /$(arg namespace)/joy" />
+    <node name="frodo_joy" pkg="topic_tools" type="relay"
+        args="/joy /$(arg namespace)/joy" />
 
     <!-- Launch RVIZ -->
     <node pkg="rviz" type="rviz" name="rviz" 
-            args="-d $(find px4_control)/Extras/$(arg namespace).rviz"/>
+            args="-d $(find px4_control)/Extras/$(arg namespace)Inspection.rviz"/>
 </launch>
