@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include "nav_msgs/Odometry.h"
+#include "../globals.h"
 #include "../structs.h"
 
 //Sets initial errors to zero

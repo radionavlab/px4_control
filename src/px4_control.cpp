@@ -25,6 +25,7 @@ StateMachine FSM;
 int threadCount = 0;
 PID_3DOF PosPID;
 PosControlParam ControlParam;
+Eigen::Vector3d pidSaturation;
 std::string odomTopic, joyDriver, pvaTopic;
 
 int main(int argc, char **argv)
@@ -32,7 +33,7 @@ int main(int argc, char **argv)
   //Initialize ROS
   ros::init(argc, argv, "~");
   ros::NodeHandle n;  
-
+  pidSaturation(0)=100;pidSaturation(1)=100;pidSaturation(2)=100;
   //Initialize some variables
   initializePVA(PVA_ref);
   initializeJoy(joy);
