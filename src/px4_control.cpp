@@ -8,7 +8,7 @@
 #include "Threads/joyTask.h"
 #include "Threads/commPub.h"
 #include "Services/services.h"
-
+#include <Eigen/Geometry>
 #include <pthread.h>
 
 

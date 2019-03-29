@@ -52,7 +52,7 @@ Eigen::Vector3d outputPID3(PID_3DOF PID){
 	pidTot   =  PID.e_prop.cwiseProduct(PID.K_p) + 
 				PID.e_deriv.cwiseProduct(PID.K_d) + 
 				PID.e_integ.cwiseProduct(PID.K_i);
-	pidTot = saturationF(pidTot, pidSaturation);
+// pidTot = saturationF(pidTot, pidSaturation);
 	PID_out =  PID.feedForward + pidTot;
 
 	return PID_out;
@@ -122,7 +122,7 @@ void readROSparameterServer(PID_3DOF &PID, PosControlParam &Param){
   ros::param::get("px4_control_node/maxPID_x", pidSat[0]);
   ros::param::get("px4_control_node/maxPID_y", pidSat[1]);
   ros::param::get("px4_control_node/maxPID_z", pidSat[2]);
-  pidSaturation = pidSat;
+//  pidSaturation = pidSat;
 
   //Print all parameter values
   ROS_INFO("mass: %f\tgz: %f\tthrustRatio: %f", mass, gz, thrustRatio);
