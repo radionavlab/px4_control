@@ -1,0 +1,42 @@
+<launch>
+	<node name="phoenix_udp" pkg="topic_tools" type="relay"
+      args="/phoenix/local_odom/ENU /phoenix/local_odom/udp">
+      <param name="unreliable" value="true"/>
+  </node>
+
+  <node name="hippogriff_udp" pkg="topic_tools" type="relay"
+      args="/hippogriff/local_odom/ENU /hippogriff/local_odom/udp">
+      <param name="unreliable" value="true"/>
+  </node>
+
+  <node name="gryphon_udp" pkg="topic_tools" type="relay"
+      args="/gryphon/local_odom/ENU /gryphon/local_odom/udp">
+      <param name="unreliable" value="true"/>
+  </node>
+
+  <node name="pegasus_udp" pkg="topic_tools" type="relay"
+      args="/pegasus/local_odom/ENU /pegasus/local_odom/udp">
+      <param name="unreliable" value="true"/>
+  </node>
+
+  <node name="harry_udp" pkg="topic_tools" type="relay"
+      args="/harry/local_odom/ENU /harry/local_odom/udp">
+      <param name="unreliable" value="true"/>
+  </node>
+
+  <node name="ron_udp" pkg="topic_tools" type="relay"
+      args="/ron/local_odom/ENU /ron/local_odom/udp">
+      <param name="unreliable" value="true"/>
+  </node>
+
+  <node name="hermione_udp" pkg="topic_tools" type="relay"
+      args="/hermione/local_odom/ENU /hermione/local_odom/udp">
+      <param name="unreliable" value="true"/>
+  </node>
+
+  <node name="luna_udp" pkg="topic_tools" type="relay"
+      args="/luna/local_odom/ENU /luna/local_odom/udp">
+      <param name="unreliable" value="true"/>
+  </node>
+
+</launch>
