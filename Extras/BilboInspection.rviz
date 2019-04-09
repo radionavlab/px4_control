@@ -4,8 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Global Options1
-        - /Status1
+        - /Inspection Wps1
         - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 436
@@ -27,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Image Features
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -83,7 +82,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /Bilbo/triangulation/fault_detection
+      Marker Topic: /triangulation/fault_detection
       Name: FaultDetection
       Namespaces:
         {}
@@ -91,7 +90,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /darknet_ros/detection_image
+      Image Topic: /Bilbo/darknet_ros/detection_image
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -142,7 +141,7 @@ Visualization Manager:
       Value: false
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /Bilbo/inspector_node/MissionWps
+      Marker Topic: /inspector_node/MissionWps
       Name: Inspection Wps
       Namespaces:
         {}
@@ -155,17 +154,7 @@ Visualization Manager:
         All Enabled: false
         Bilbo/base_link:
           Value: true
-        camera_aligned_depth_to_color_frame:
-          Value: true
-        camera_color_frame:
-          Value: true
-        camera_color_optical_frame:
-          Value: true
-        camera_depth_frame:
-          Value: true
-        camera_depth_optical_frame:
-          Value: true
-        camera_link:
+        Frodo/base_link:
           Value: true
         map:
           Value: true
@@ -177,6 +166,8 @@ Visualization Manager:
       Tree:
         map:
           Bilbo/base_link:
+            {}
+          Frodo/base_link:
             {}
       Update Interval: 0
       Value: true
@@ -270,25 +261,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.50963044
+      Distance: 3.70921683
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.0358493701
-        Y: -0.865497231
-        Z: 0.0697966889
+        X: 0.156227887
+        Y: -0.780244768
+        Z: 0.0743649378
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.709796965
+      Pitch: 0.694796979
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.21361852
+      Yaw: 2.14862037
     Saved: ~
 Window Geometry:
   Displays:
