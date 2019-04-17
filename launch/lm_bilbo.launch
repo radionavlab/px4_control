@@ -2,7 +2,7 @@
 
     <arg name="namespace" default="Bilbo" />
     <arg name="rviz_cfg"  default="-d $(find px4_control)/Extras/$(arg namespace)Inspection.rviz" />
-    <arg name="launch_rviz" default="true" />
+    <arg name="launch_rviz" default="false" />
 
     <!-- MAVROS parameters -->
     <arg name="fcu_url" default="udp://:14530@192.168.1.40:14540"/>
