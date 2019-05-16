@@ -1,0 +1,25 @@
+<launch>
+	<node name="phoenix_joy" pkg="topic_tools" type="relay"
+      args="/joy /phoenix/joy" />
+
+	<node name="gryphon_joy" pkg="topic_tools" type="relay"
+      args="/joy /gryphon/joy" />
+
+	<node name="hippogryph_joy" pkg="topic_tools" type="relay"
+      args="/joy /hippogryph/joy" />
+
+        <node name="pegasus_joy" pkg="topic_tools" type="relay"
+      args="/joy /pegasus/joy" />
+
+	<node name="harry_joy" pkg="topic_tools" type="relay"
+      args="/joy /harry/joy" />
+
+	<node name="hermione_joy" pkg="topic_tools" type="relay"
+      args="/joy /hermione/joy" />
+
+	<node name="ron_joy" pkg="topic_tools" type="relay"
+      args="/joy /ron/joy" />
+
+        <node name="luna_joy" pkg="topic_tools" type="relay"
+      args="/joy /luna/joy" />
+</launch>

@@ -5,7 +5,7 @@
     <arg name="tgt_component" default="1" />
     <arg name="log_output" default="screen" />
     <group ns="phoenix">
-        <include file="$(find px4_control)/launch/360_group.launch"> </include>
+        <include file="$(find px4_control)/launch/360_tourn.launch"> </include>
         <include file="$(find autolander)/launch/lander.launch"> </include>
         <!-- <include file="$(find gps_kf)/launch/gps_group.launch"> </include> -->
         <include file="$(find mavros)/launch/node.launch">
