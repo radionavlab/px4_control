@@ -7,7 +7,6 @@ Panels:
         - /Global Options1
         - /Status1
         - /TF1/Frames1
-        - /PointCloud21
       Splitter Ratio: 0.5
     Tree Height: 436
   - Class: rviz/Selection
@@ -99,7 +98,7 @@ Visualization Manager:
       Value: false
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /Frodo/inspector_node/MissionWps
+      Marker Topic: /PlanningExample/inspector_node/MissionWps
       Name: Inspection Wps
       Namespaces:
         {}
@@ -243,13 +242,13 @@ Visualization Manager:
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: false
+      Enabled: true
       Marker Topic: /Mapper/mapper_node/obstacle_markers
       Name: Obstacles
       Namespaces:
-        {}
+        obstacleMap: true
       Queue Size: 100
-      Value: false
+      Value: true
     - Class: rviz/MarkerArray
       Enabled: false
       Marker Topic: /Mapper/mapper_node/inflated_obstacle_markers
@@ -261,8 +260,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 2.66440749
-        Min Value: -0.00668644905
+        Max Value: 2.12102437
+        Min Value: -0.607861459
         Value: true
       Axis: Z
       Channel Name: x
@@ -288,6 +287,14 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
+    - Class: rviz/Marker
+      Enabled: false
+      Marker Topic: /Mapper/mapper_node/graph_tree_path_planner
+      Name: PathPlanningGraphs
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 0; 0; 0
@@ -313,25 +320,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.46482801
+      Distance: 3.62461305
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.617498279
-        Y: -0.598660707
-        Z: 1.14295042
+        X: -0.0733356848
+        Y: 0.301691204
+        Z: 0.944044352
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.279797554
+      Pitch: 0.374796897
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.47360969
+      Yaw: 2.32679653
     Saved: ~
 Window Geometry:
   DefectDetection:

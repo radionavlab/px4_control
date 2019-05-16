@@ -1,11 +1,11 @@
 <launch>
 
-    <arg name="namespace" default="Bilbo" />
-    <arg name="rviz_cfg"  default="-d $(find px4_control)/Extras/$(arg namespace)Inspection.rviz" />
-    <arg name="launch_rviz" default="false" />
+    <arg name="namespace" default="Frodo" />
+    <arg name="rviz_cfg"  default="-d $(find px4_control)/Extras/$(arg namespace)InspectionMapper.rviz" />
+    <arg name="launch_rviz" default="true" />
 
     <!-- MAVROS parameters -->
-    <arg name="fcu_url" default="udp://:14530@192.168.1.40:14540"/>
+    <arg name="fcu_url" default="udp://:14531@192.168.1.31:14541"/>
     <arg name="gcs_url" default="" />
     <arg name="tgt_system" default="1" />
     <arg name="tgt_component" default="1" />
@@ -30,12 +30,17 @@
         </include>
     </group>
 
-    <node name="bilbo_joy" pkg="topic_tools" type="relay"
+    <node name="frodo_joy" pkg="topic_tools" type="relay"
         args="/joy /$(arg namespace)/joy" />
 
     <!-- Launch RVIZ -->
     <group if="$(arg launch_rviz)">
         <node pkg="rviz" type="rviz" name="rviz" args="$(arg rviz_cfg)"/>
     </group>
+
+    <include file="$(find mapper)/launch/mapper.launch">
+        <arg name="namespace" value="Mapper" />
+        <arg name="launch_rviz" value="false" />
+    </include>
 
 </launch>

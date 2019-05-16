@@ -5,7 +5,7 @@
     <arg name="launch_rviz" default="false" />
 
     <!-- MAVROS parameters -->
-    <arg name="fcu_url" default="udp://:14550@192.168.1.30:14556"/>
+    <arg name="fcu_url" default="udp://:14531@192.168.1.31:14541"/>
     <arg name="gcs_url" default="" />
     <arg name="tgt_system" default="1" />
     <arg name="tgt_component" default="1" />
@@ -28,13 +28,6 @@
             <arg name="tgt_component" value="$(arg tgt_component)" />
             <arg name="log_output" value="$(arg log_output)" />
         </include>
-
-        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-        <!-- Tf server for updating vehicles tf's -->
-        <node pkg="tf_publisher" type="tf_publisher" name="tf_publisher" output="screen">
-            <param name="namespace" value="$(arg namespace)"/>
-            <param name="input_odometry" value="/$(arg namespace)/local_odom"/>
-        </node>
     </group>
 
     <node name="frodo_joy" pkg="topic_tools" type="relay"
