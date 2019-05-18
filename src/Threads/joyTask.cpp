@@ -176,6 +176,7 @@ void *joyTask(void *threadID){
 			pthread_mutex_lock(&mutexes.PVAref);
 				PVA_ref = filterJoy(PVA_ref, Vel_ref, dt.toSec(), PosRefTimeConstant);
 				PVA_ref.Pos.pose.orientation = rpy2quat(RPY_ref);
+				//<<>> PVA_ref.Pos.pose.orientation = rpy2quat2(RPY_ref);
 			pthread_mutex_unlock(&mutexes.PVAref);
 
 		}

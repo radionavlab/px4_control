@@ -83,7 +83,7 @@ ROS_INFO("Command Publisher started!");
 		    pthread_mutex_lock(&mutexes.PVA_ros);
 		    	localPVA_ref.Pos.pose.position = PVA_Ros.Pos;
 		    	localPVA_ref.Pos.pose.orientation = 
-							rpy2quat(SetVector3(0, 0, PVA_Ros.yaw));
+							rpy2quat(SetVector3(0, 0, PVA_Ros.yaw)); //calculation that doesn't cause the spin
 		    	localPVA_ref.Vel.twist.linear = PVA_Ros.Vel;
 		    	localPVA_ref.Acc.accel.linear = PVA_Ros.Acc;
 		    pthread_mutex_unlock(&mutexes.PVA_ros);

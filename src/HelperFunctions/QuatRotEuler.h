@@ -23,8 +23,11 @@ geometry_msgs::Quaternion normalizeQuat(geometry_msgs::Quaternion q);
 //Function to convert quaternion to Roll-Pitch_yaw
 geometry_msgs::Vector3 quat2rpy(geometry_msgs::Quaternion quat);
 
-//Function to convert Roll-Pitch-yaw to quaternion
+//Function to convert Roll-Pitch-Yaw to quaternion
 geometry_msgs::Quaternion rpy2quat(geometry_msgs::Vector3 rpy);
+
+//Function to convert Roll-Pitch-Yaw as [0;0;X] to quaternion
+geometry_msgs::Quaternion rpy2quat2(geometry_msgs::Vector3 rpy);
 
 //Function to get yaw from a quaternion
 double getHeadingFromQuat(geometry_msgs::Quaternion quat);

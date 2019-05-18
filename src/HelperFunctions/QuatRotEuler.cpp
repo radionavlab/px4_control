@@ -102,6 +102,17 @@ geometry_msgs::Quaternion rpy2quat(geometry_msgs::Vector3 rpy){
 	return qout;
 }
 
+geometry_msgs::Quaternion rpy2quat2(geometry_msgs::Vector3 rpy){
+	double roll, pitch, yaw;
+	geometry_msgs::Quaternion qout;
+
+	yaw = rpy.z;
+
+	qout = setQuat(0,0,sin(yaw/2),cos(yaw/2));
+
+	return qout;
+}
+
 double getHeadingFromQuat(geometry_msgs::Quaternion quat){
 	geometry_msgs::Vector3 RPY = quat2rpy(quat);
 	return RPY.z;
