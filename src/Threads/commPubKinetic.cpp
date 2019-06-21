@@ -35,7 +35,7 @@ ROS_INFO("Command Publisher started!");
 	nav_msgs::Odometry localOdom;	//Save odometry data locally
 	PVA_structure localPVA_ref;
 	PosControlParam localParam;
-	geometry_msgs::PoseStamped  PoseRef;
+	geometry_msgs::PoseStamped  PoseRef, RvizPoseRef;
 	mavros_msgs::AttitudeTarget AttRef;
 	AttRef.type_mask = AttRef.IGNORE_ROLL_RATE +
 					   AttRef.IGNORE_PITCH_RATE +

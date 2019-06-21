@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(px4_control)
 
-option(USE_KINETIC "Use kinetic version instead of indigo version" FALSE) # TRUE/FALSE
+option(USE_KINETIC "Use kinetic version instead of indigo version" TRUE) # TRUE/FALSE
 
 ## Add support for C++11, supported in ROS Kinetic and newer
 add_definitions(-std=c++11)

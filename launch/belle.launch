@@ -1,0 +1,29 @@
+<launch>
+
+    <arg name="namespace" default="Bilbo" />
+    <arg name="rviz_cfg"  default="-d $(find px4_control)/Extras/$(arg namespace)Inspection.rviz" />
+    <arg name="launch_rviz" default="false" />
+
+    <!-- MAVROS parameters -->
+    <arg name="fcu_url" default="udp://:14530@192.168.1.40:14540"/>
+    <arg name="gcs_url" default="" />
+    <arg name="tgt_system" default="1" />
+    <arg name="tgt_component" default="1" />
+    <arg name="log_output" default="screen" />
+    
+    <include file="$(find px4_control)/launch/pensa_group.launch"> 
+        <arg name="namespace" value="$(arg namespace)" />
+    </include>
+
+<!--     <node respawn="true" pkg="joy" type="joy_node" name="joy">
+        <param name="dev" type="string" value="/dev/input/js0" />
+        <param name="deadzone" value="0.12" />
+        <param name="autorepeat_rate" value="20" />
+    </node> -->
+
+    <!-- Launch RVIZ -->
+    <group if="$(arg launch_rviz)">
+        <node pkg="rviz" type="rviz" name="rviz" args="$(arg rviz_cfg)"/>
+    </group>
+
+</launch>
