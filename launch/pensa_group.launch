@@ -53,7 +53,7 @@
     <param name="land_speed" value="0.5"/>    <!-- m/s -->
 
     <!-- Timeouts to trigger autoland -->
-    <param name="joystickTimeout" value="1.0"/>
+    <param name="joystickTimeout" value="2.0"/>
     <param name="odometryTimeout" value="1.0"/>
   </node>
 </launch>

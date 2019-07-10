@@ -42,14 +42,24 @@ public:
     // helper variables
     ros::Rate r(1.0/dt);
 
+    //Get information about state of the system
+    StateMachine localFSM;  //Save state machine data locally
+    pthread_mutex_lock(&mutexes.FSM);
+      localFSM = FSM;
+    pthread_mutex_unlock(&mutexes.FSM);
+
+    // Cannot switch when in autoland or disarmed!
+    if((localFSM.State == localFSM.MODE_DISARM) || (localFSM.State == localFSM.MODE_AUTOLAND)) {
+      ROS_WARN("[px4_control_node] Cannot trigger Action: Quad is Disarmed or in Autoland!");
+      return;
+    }
+
     // Set quad to listen to PVA references
     SetEvent(triggerEvents.switch2ros_position_mode);
 
     // Wait until PVA mode is triggered (check every 0.01 seconds)
-    StateMachine localFSM;      //Save state machine data locally
     ros::Time t0 = ros::Time::now();
     do {
-
       if ((ros::Time::now() - t0).toSec() > 5.0) {
           ROS_ERROR("[%s] px4_control_node is taking too long to switch to PVA mode! Aborting...",
                      action_name_.c_str());
@@ -69,8 +79,7 @@ public:
     // start executing the action
     for(int i=0; i < flatStates.PVAJS_array.size(); i++) {
       // check that halt has not been requested by the client
-      if (as_.isPreemptRequested() || !ros::ok())
-      {
+      if (as_.isPreemptRequested() || !ros::ok()) {
         ROS_INFO("%s: Preempted", action_name_.c_str());
         // set the action state to preempted
         as_.setPreempted();
