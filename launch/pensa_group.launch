@@ -1,6 +1,8 @@
 <launch>
 
   <arg name="namespace" default="Bilbo" />
+  <arg name="odom_topic" default="/camera/odom/sample" />
+  <arg name="thrust_ratio" default="1.5" />
 
   <node pkg="px4_control"
     type="px4_control_node"
@@ -23,7 +25,7 @@
     <param name="PosRefTimeConstant" value="0.3"/> <!-- seconds -->
 
     <!-- Topic with odometry information for the vehicle -->
-    <param name="odomTopic" value="/camera/odom/sample"/>
+    <param name="odomTopic" value="$(arg odom_topic)"/>
 
     <!-- Name of topic to use when handling PVA_References-->
     <param name="pvaTopic" value="px4_control/PVA_Ref"/>
@@ -35,7 +37,7 @@
     <!-- Position Control parameters -->
     <param name="mass" value="0.637"/>       <!-- kg -->
     <param name="gz" value="9.81"/>          <!-- m/s^2 -->
-    <param name="thrustRatio" value="1.5"/>  <!-- maxThrust/Weight -->
+    <param name="thrustRatio" value="$(arg thrust_ratio)"/>  <!-- maxThrust/Weight -->
     <param name="kpx" value="2.05"/>  <!--3.0-->
     <param name="kpy" value="1.95"/>
     <param name="kpz" value="1.25"/>  <!--1.9-->

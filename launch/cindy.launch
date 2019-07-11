@@ -1,0 +1,24 @@
+<launch>
+
+    <arg name="namespace" default="Bilbo" />
+    <arg name="rviz_cfg"  default="-d $(find p4_ros)/launch/rviz_config/time_optimizer.rviz" />
+    <arg name="launch_rviz" default="true" />
+    
+    <include file="$(find px4_control)/launch/pensa_group.launch"> 
+        <arg name="namespace" value="$(arg namespace)" />
+        <arg name="odom_topic" value="/vislam/odometry" />
+        <arg name="thrust_ratio" value="2.0" />
+    </include>
+
+    <!-- <node respawn="true" pkg="joy" type="joy_node" name="joy"> -->
+        <!-- <param name="dev" type="string" value="/dev/input/js0" /> -->
+        <!-- <param name="deadzone" value="0.12" /> -->
+        <!-- <param name="autorepeat_rate" value="20" /> -->
+    <!-- </node> -->
+
+    <!-- Launch RVIZ -->
+    <group if="$(arg launch_rviz)">
+        <node pkg="rviz" type="rviz" name="rviz" args="$(arg rviz_cfg)"/>
+    </group>
+
+</launch>
