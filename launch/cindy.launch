@@ -1,7 +1,6 @@
 <launch>
 
     <arg name="namespace" default="Bilbo" />
-    <arg name="rviz_cfg"  default="-d $(find p4_ros)/launch/rviz_config/time_optimizer.rviz" />
     <arg name="launch_rviz" default="false" />
     
     <include file="$(find px4_control)/launch/pensa_group.launch"> 
@@ -16,8 +15,13 @@
         <!-- <param name="autorepeat_rate" value="20" /> -->
     <!-- </node> -->
 
+      <!-- Vislam w.r.t. map frame -->
+    <node name="vislam_to_map" pkg="tf" type="static_transform_publisher" output="screen" 
+    args="0 0 0 0 0 0 map vislam 50"/>
+
     <!-- Launch RVIZ -->
     <group if="$(arg launch_rviz)">
+        <arg name="rviz_cfg"  default="-d $(find p4_ros)/launch/rviz_config/time_optimizer.rviz" />
         <node pkg="rviz" type="rviz" name="rviz" args="$(arg rviz_cfg)"/>
     </group>
 
