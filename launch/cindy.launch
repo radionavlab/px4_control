@@ -2,7 +2,7 @@
 
     <arg name="namespace" default="Bilbo" />
     <arg name="rviz_cfg"  default="-d $(find p4_ros)/launch/rviz_config/time_optimizer.rviz" />
-    <arg name="launch_rviz" default="true" />
+    <arg name="launch_rviz" default="false" />
     
     <include file="$(find px4_control)/launch/pensa_group.launch"> 
         <arg name="namespace" value="$(arg namespace)" />
