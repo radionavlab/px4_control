@@ -5,7 +5,7 @@
     
     <include file="$(find px4_control)/launch/pensa_group.launch"> 
         <arg name="namespace" value="$(arg namespace)" />
-        <arg name="odom_topic" value="/vislam/odometry" />
+        <arg name="odom_topic" value="/mavros/local_position/odom" />
         <arg name="thrust_ratio" value="2.0" />
     </include>
 
