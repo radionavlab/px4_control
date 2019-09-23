@@ -23,7 +23,7 @@
     <param name="PosRefTimeConstant" value="0.3"/> <!-- seconds -->
 
     <!-- Topic with odometry information for the vehicle -->
-    <param name="odomTopic" value="/camera/odom/topic"/>
+    <param name="odomTopic" value="/camera/odom/sample"/>
 
     <!-- Name of topic to use when handling PVA_References-->
     <param name="pvaTopic" value="px4_control/PVA_Ref"/>
