@@ -203,6 +203,7 @@ void FSMTask(){
 	       (localFSM.State == localFSM.MODE_AUTOLAND) ||
 	       (localFSM.State == localFSM.MODE_ATTITUDE)){
 
+	    	// std::cout << localPX4state.mode << std::endl;
 	        if( localPX4state.mode != "OFFBOARD" &&
 	            (ros::Time::now() - last_request_offboard > ros::Duration(1.0))){
 	            if( SetModeClient.call(ModeMsg) &&
@@ -219,9 +220,14 @@ void FSMTask(){
 	        } else if( (localPX4state.armed==0) &&
                 (ros::Time::now() - last_request_arm > ros::Duration(1.0))){
                 ArmMsg.request.value = true;
-                if( armClient.call(ArmMsg) &&
-                    ArmMsg.response.success){
+                ROS_INFO("Trying to arm...");
+                bool success = armClient.call(ArmMsg);
+                if( success && ArmMsg.response.success){
                     ROS_INFO("Arming vehicle...");
+                } else {
+                	ROS_INFO("Arm failed!");
+                	std::cout << "success calling service: " << success << std::endl;
+                	std:: cout << "success response: " << ArmMsg.response.success << std::endl;
                 }
                 last_request_arm = ros::Time::now();
             }
