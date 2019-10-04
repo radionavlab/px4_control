@@ -71,3 +71,6 @@ double deg2rad(double degVal);
 
 //Convert radians to degrees
 double rad2deg(double radVal);
+
+// ROS quaternion to Eigen quaternion
+Eigen::Vector4d convert(const geometry_msgs::Quaternion& q);

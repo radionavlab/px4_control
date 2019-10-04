@@ -46,3 +46,6 @@ Eigen::Matrix3d roty(double theta);
 
 //Rotation matrix for a rotation about the z-axis
 Eigen::Matrix3d rotz(double theta);
+
+// Converts quaternion to DCM
+Eigen::Matrix3d quat2dc(const Eigen::Vector4d& quat);

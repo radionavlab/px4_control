@@ -159,3 +159,9 @@ double deg2rad(double degVal){
 double rad2deg(double radVal){
 	return radVal*180.0/M_PI;
 }
+
+Eigen::Vector4d convert(const geometry_msgs::Quaternion& q) {
+	Eigen::Vector4d qE;
+	qE << q.x, q.y, q.z, q.w;
+	return qE;
+}

@@ -3,7 +3,7 @@
 void commPubTimer(){
 	
 	ROS_INFO("commPubTimer has started!");
-	int SamplingTime = 4;	//Sampling time in milliseconds
+	int SamplingTime = 20;	//Sampling time in milliseconds
 
 	while(1){
 		WaitForEvent(syncEvents.Timeout,SamplingTime);

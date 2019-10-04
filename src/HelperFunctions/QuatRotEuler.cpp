@@ -194,3 +194,25 @@ Eigen::Matrix3d rotz(double theta){
 
 	return R;
 }
+
+Eigen::Matrix3d quat2dc(const Eigen::Vector4d& quat) {
+
+    float q0, q1, q2, q3;
+    q0 = quat(0);
+    q1 = quat(1);
+    q2 = quat(2);
+    q3 = quat(3);
+
+    Eigen::Matrix3d dc = Eigen::MatrixXd::Zero(3,3);
+    dc(0,0) = q0*q0 - q1*q1 - q2*q2 + q3*q3;
+    dc(0,1) = 2.0*(q0*q1 + q2*q3);
+    dc(0,2) = 2.0*(q0*q2 - q1*q3);
+    dc(1,0) = 2.0*(q0*q1 - q2*q3);
+    dc(1,1) = -q0*q0 + q1*q1 - q2*q2 + q3*q3;
+    dc(1,2) = 2.0*(q1*q2 + q0*q3);
+    dc(2,0) = 2.0*(q0*q2 + q1*q3);
+    dc(2,1) = 2.0*(q1*q2 - q0*q3);
+    dc(2,2) = -q0*q0 - q1*q1 + q2*q2 + q3*q3;
+
+    return dc;
+  }

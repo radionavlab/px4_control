@@ -118,7 +118,8 @@ void PosController(nav_msgs::Odometry Odom,
 	Eigen::Vector3d Pos, Vel;				//Current PV
 	Eigen::Vector3d feedForward;			//Feedforward vector
 	Eigen::Vector3d Fdes;					//Desired force in body frame
-	Eigen::Vector3d z_w, z_b;				//z direction in world and body frames 
+	Eigen::Vector3d z_w;	    			//drone z direction in world frame
+	Eigen::Vector3d e_3;                    //z direction
 	Eigen::Matrix3d Rbw;					//Rotation from body to world
 	Eigen::Matrix3d Rdes;					//Desired rotation
 	Eigen::Vector3d z_bdes, x_cdes, y_bdes, x_bdes;
@@ -145,8 +146,10 @@ void PosController(nav_msgs::Odometry Odom,
 
 	//Rotation matrix and z frame vectors
 	Rbw = quat2rot(Odom.pose.pose.orientation);
-	z_w << 0, 0, 1;
-	z_b = Rbw*z_w;
+	// Eigen::Matrix3d Rbw2 = quat2dc(convert(Odom.pose.pose.orientation)).transpose();
+	// std::cout << Rbw - Rbw2 << std::endl << std::endl;
+	e_3 << 0, 0, 1;
+	z_w = Rbw*e_3;
 
 	//Calculate errors (Obs: Odom might be in body or inertial frame)
 	e_Pos = PosRef - Pos;
@@ -160,13 +163,13 @@ void PosController(nav_msgs::Odometry Odom,
 	}
 	
 	//Translational controller
-	feedForward = m*gz*z_w + m*AccRef;
+	feedForward = m*gz*e_3 + m*AccRef;
 	updateErrorPID3(PosPID, feedForward, e_Pos, e_Vel, dt);
 	Fdes = outputPID3(PosPID);
 	//ROS_INFO("fdes= %f  %f  %f",Fdes(0),Fdes(1),Fdes(2));
 
 	//Desired thrust in body frame. Outputs thrust as a fraction of max thrust
-	AttThrustRef.thrust = min(max(Fdes.dot(z_b), 0.0),maxThrust)/maxThrust;
+	AttThrustRef.thrust = min(max(Fdes.dot(z_w), 0.0),maxThrust)/maxThrust;
 
 	//Find desired attitude from desired force and yaw angle
 	z_bdes = normalizeVector3d(Fdes);
