@@ -2,10 +2,11 @@
 
     <arg name="namespace" default="Sauron" />
 
+    <!-- Simulation always sends thrust of 0.0 to the drone -->
     <group ns="$(arg namespace)">
         <include file="$(find px4_control)/launch/intel_aero_group.launch"> 
             <arg name="namespace" value="$(arg namespace)" />
-            <arg name="maxThrust" value="1.0" />
+            <arg name="maxThrust" value="0.0" />
         </include>
     </group>
 

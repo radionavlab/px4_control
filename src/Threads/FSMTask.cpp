@@ -202,9 +202,12 @@ void FSMTask(){
 
 	        if( localPX4state.mode != "OFFBOARD" &&
 	            (ros::Time::now() - last_request > ros::Duration(1.0))){
-	            if( SetModeClient.call(ModeMsg) &&
-	                ModeMsg.response.success){
+	        	bool call_mode = SetModeClient.call(ModeMsg);
+	            if( call_mode && ModeMsg.response.success){
 	                ROS_INFO("Offboard enabled!");
+	            }
+	            if (!call_mode) {
+	            	ROS_INFO("Offboard service '%s' not called properly!", SetModeClient.getService().c_str());
 	            }
 	            last_request = ros::Time::now();
 	        } else if ((localFSM.State == localFSM.MODE_AUTOLAND) && !localPX4state.armed){
