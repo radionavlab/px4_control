@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="namespace" default="Bilbo" />
+  <arg name="namespace" default="Sauron" />
 
   <node pkg="px4_control"
     type="px4_control_node"
@@ -8,7 +8,7 @@
     output="screen">
 
     <!-- Namespace -->
-    <param name="namespace" value="$(arg namespace)"/>     <!-- degrees -->
+    <param name="namespace" value="$(arg namespace)"/>
 
     <!-- Joystick Attitude Reference parameters -->
     <param name="RollMax" value="40.0"/>     <!-- degrees -->

@@ -43,8 +43,8 @@ ROS_INFO("Command Publisher started!");
 
 	//Publishers
 	ros::NodeHandle n; 
-	ros::Publisher PosPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local",100);
-    ros::Publisher AttPub = n.advertise<mavros_msgs::AttitudeTarget>("mavros/setpoint_raw/attitude",100);
+	ros::Publisher PosPub = n.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local2",100);
+    ros::Publisher AttPub = n.advertise<mavros_msgs::AttitudeTarget>("mavros/setpoint_raw/attitude2",100);
     ros::Publisher RvizPosPub = n.advertise<geometry_msgs::PoseStamped>("px4_control_node/local_setpoint",100);
 
 	ros::Time t_prev = ros::Time::now();
