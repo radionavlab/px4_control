@@ -34,17 +34,17 @@
     <param name="joyDriver" value="joyXbox360Wired"/>
     
     <!-- Position Control parameters -->
-    <param name="mass" value="1.40"/>       <!-- kg -->
+    <param name="mass" value="1.30"/>       <!-- kg -->
     <param name="gz" value="9.81"/>          <!-- m/s^2 -->
-    <param name="thrustRatio" value="1.60"/>  <!-- maxThrust/Weight -->
+    <param name="thrustRatio" value="1.7"/>  <!-- maxThrust/Weight -->
     <param name="kpx" value="1.5"/>  <!--3.0-->
     <param name="kpy" value="1.5"/>
     <param name="kpz" value="1.00"/>  <!--1.9-->
     <param name="kvx" value="2.5"/>  <!--3.7-->
     <param name="kvy" value="2.5"/>
     <param name="kvz" value="1.5"/>  <!--1.9-->
-    <param name="kix" value="0.02"/>
-    <param name="kiy" value="0.02"/>
+    <param name="kix" value="0.04"/>
+    <param name="kiy" value="0.04"/>
     <param name="kiz" value="0.02"/>
     <param name="maxInteg_x" value="1.0"/>
     <param name="maxInteg_y" value="1.0"/>
