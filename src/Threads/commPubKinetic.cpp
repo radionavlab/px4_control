@@ -47,6 +47,11 @@ ROS_INFO("Command Publisher started!");
     ros::Publisher AttPub = n.advertise<mavros_msgs::AttitudeTarget>("mavros/setpoint_raw/attitude",100);
     ros::Publisher RvizPosPub = n.advertise<geometry_msgs::PoseStamped>("px4_control_node/local_setpoint",100);
 
+    // Get max allowed thrust
+    double maxThrust;
+    ros::param::get("px4_control_node/maxThrust", maxThrust);
+    ROS_WARN("Max allowed thrust: %f", maxThrust);
+
 	ros::Time t_prev = ros::Time::now();
 	ros::Time t_now = ros::Time::now();
 	ros::Duration dt;
@@ -144,6 +149,7 @@ ROS_INFO("Command Publisher started!");
 		AttRef.header.seq = count;
 		AttRef.header.stamp = t_now;
 		AttRef.header.frame_id = "fcu";
+		AttRef.thrust = min(maxThrust, AttRef.thrust);
 
 		// Set header for Rviz publisher
 		RvizPoseRef.header.seq = count;

@@ -44,6 +44,11 @@ ROS_INFO("Command Publisher started!");
     ros::Publisher ThrustPub = n.advertise<std_msgs::Float64>("mavros/setpoint_attitude/att_throttle", 100);
     ros::Publisher RvizPosPub = n.advertise<geometry_msgs::PoseStamped>("px4_control_node/local_setpoint",100);
 
+    // Get max allowed thrust
+    double maxThrust;
+    ros::param::get("px4_control_node/maxThrust", maxThrust);
+    ROS_WARN("Max allowed thrust: %f", maxThrust);
+
 	ros::Time t_prev = ros::Time::now();
 	ros::Time t_now = ros::Time::now();
 	ros::Duration dt;
@@ -130,6 +135,9 @@ ROS_INFO("Command Publisher started!");
 		PoseRef.header.seq = count;
 		PoseRef.header.stamp = t_now;
 		PoseRef.header.frame_id = "fcu";
+
+		// Saturate thrust
+		refThrust.data = min(refThrust.data, maxThrust);
 
 		//Publish references
 		if ((localFSM.PosControlMode == localFSM.POS_CONTROL_LOCAL) ||
