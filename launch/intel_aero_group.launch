@@ -24,7 +24,7 @@
     <param name="PosRefTimeConstant" value="0.3"/> <!-- seconds -->
 
     <!-- Topic with odometry information for the vehicle -->
-    <param name="odomTopic" value="camera/odom/center_of_mass"/>
+    <param name="odomTopic" value="t265/odom/center_of_mass"/>
 
     <!-- Name of topic to use when handling PVA_References-->
     <param name="pvaTopic" value="px4_control/PVA_Ref"/>
@@ -34,9 +34,9 @@
     <param name="joyDriver" value="joyXbox360Wired"/>
     
     <!-- Position Control parameters -->
-    <param name="mass" value="1.20"/>       <!-- kg -->
+    <param name="mass" value="1.45"/>       <!-- kg -->
     <param name="gz" value="9.81"/>          <!-- m/s^2 -->
-    <param name="thrustRatio" value="1.786"/>  <!-- maxThrust/Weight -->
+    <param name="thrustRatio" value="1.54"/>  <!-- maxThrust/Weight -->
     <param name="kpx" value="1.5"/>  <!--3.0-->
     <param name="kpy" value="1.5"/>
     <param name="kpz" value="1.00"/>  <!--1.9-->
