@@ -8,7 +8,12 @@
     output="screen">
 
     <!-- Namespace -->
-    <param name="namespace" value="$(arg namespace)"/>     <!-- degrees -->
+    <param name="namespace" value="$(arg namespace)"/>
+
+    <!-- Set initial position controller -->
+    <!-- True = Px4 pos controller -->
+    <!-- False = SE3 pos controller -->
+    <param name="px4_pos_control" value="false"/>
 
     <!-- Joystick Attitude Reference parameters -->
     <param name="RollMax" value="40.0"/>     <!-- degrees -->

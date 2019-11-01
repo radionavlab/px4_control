@@ -40,12 +40,16 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "~");
   ros::NodeHandle n;  
 
+  // Initial position controller
+  bool px4_pos_control;
+  ros::param::get("px4_control_node/px4_pos_control", px4_pos_control);
+
   //Initialize some variables
   initializePVA(PVA_ref);
   initializeJoy(joy);
   initializeEvents(joyEvents, syncEvents, triggerEvents);
   initializeMutexes(mutexes);
-  initializeStateMachine(FSM);
+  initializeStateMachine(FSM, px4_pos_control);
   initializePID3(PosPID);
   readROSparameterServer(PosPID, ControlParam);
 
@@ -78,7 +82,6 @@ int main(int argc, char **argv)
   ros::ServiceServer land_srv = n.advertiseService("px4_control_node/landQuad", landQuad);
   ros::ServiceServer use_px4_pos_control_srv = n.advertiseService("px4_control_node/use_px4_pos_controller", switcPosController2PX4);
   ros::ServiceServer use_local_pos_control_srv = n.advertiseService("px4_control_node/use_SE3_pos_controller", switcPosController2local);
-
 
   //Create actions -------------------------------------------
   follow_PVAJS_trajectoryAction follow_PVAJS_trajectory_action("follow_PVAJS_trajectory_action");

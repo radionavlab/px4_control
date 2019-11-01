@@ -155,7 +155,7 @@ void initializeMutexes(mutexStruct &mutexes);
 void destroyMutexes(mutexStruct &mutexes);
 
 //Set initial value for the state machine
-void initializeStateMachine(StateMachine &FSM);
+void initializeStateMachine(StateMachine &FSM, bool px4_pos_control);
 
 //Print states from the state machine
 void printCurrentState(StateMachine FSM);

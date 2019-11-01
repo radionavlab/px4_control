@@ -31,11 +31,12 @@ void updateErrorPID3(PID_3DOF &PID,
 	                Eigen::Vector3d feedForward, 
 	                Eigen::Vector3d e_prop, 
 	                Eigen::Vector3d e_deriv, 
+	                Eigen::Matrix3d Rbw,
 	                float dt){
 	PID.feedForward = feedForward;
 	PID.e_prop = e_prop;
 	PID.e_deriv = e_deriv;
-	PID.e_integ = PID.e_integ+(e_prop*dt); //e_integ = e_integ + e_prop*dt
+	PID.e_integ = PID.e_integ+(Rbw*e_prop*dt); //e_integ = e_integ + e_prop*dt
 
 	//Saturate integral error between lower and upper bounds
 	for (int i = 0; i < 3; i++){
@@ -164,7 +165,7 @@ void PosController(nav_msgs::Odometry Odom,
 	
 	//Translational controller
 	feedForward = m*gz*e_3 + m*AccRef;
-	updateErrorPID3(PosPID, feedForward, e_Pos, e_Vel, dt);
+	updateErrorPID3(PosPID, feedForward, e_Pos, e_Vel, Rbw, dt);
 	Fdes = outputPID3(PosPID);
 	//ROS_INFO("fdes= %f  %f  %f",Fdes(0),Fdes(1),Fdes(2));
 

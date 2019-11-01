@@ -119,7 +119,7 @@ void destroyMutexes(mutexStruct &mutexes){
 	pthread_mutex_destroy(&mutexes.rviz_pose_ref);
 }
 
-void initializeStateMachine(StateMachine &FSM){
+void initializeStateMachine(StateMachine &FSM, bool px4_pos_control){
 	FSM.MODE_DISARM = 0;		//Disarm motors
 	FSM.MODE_ATTITUDE = 1;		//Attitude mode
 	FSM.MODE_POSITION_JOY = 2;	//Position control with references from joystick
@@ -134,8 +134,15 @@ void initializeStateMachine(StateMachine &FSM){
 
 	//Initial states
 	FSM.State = FSM.MODE_DISARM;
-	FSM.PosControlMode = FSM.POS_CONTROL_LOCAL;
 	FSM.PosRefMode = FSM.POS_REF_BODY;
+
+	if(px4_pos_control) {
+		FSM.PosControlMode = FSM.POS_CONTROL_PX4;
+		ROS_WARN("Px4 position controller enabled.");
+	} else {
+		FSM.PosControlMode = FSM.POS_CONTROL_LOCAL;
+		ROS_WARN("SE(3) position controller enabled.");
+	}
 }
 
 void printCurrentState(StateMachine FSM){

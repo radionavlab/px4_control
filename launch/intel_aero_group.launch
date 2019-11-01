@@ -11,10 +11,15 @@
     <!-- Namespace -->
     <param name="namespace" value="$(arg namespace)"/>
 
+    <!-- Set initial position controller -->
+    <!-- True = Px4 pos controller -->
+    <!-- False = SE3 pos controller -->
+    <param name="px4_pos_control" value="true"/>
+
     <!-- Joystick Attitude Reference parameters -->
     <param name="RollMax" value="40.0"/>     <!-- degrees -->
     <param name="PitchMax" value="40.0"/>    <!-- degrees -->
-    <param name="YawRateMax" value="45.0"/>  <!-- deg/sec -->
+    <param name="YawRateMax" value="30.0"/>  <!-- deg/sec -->
     <param name="maxThrust" value="$(arg maxThrust)"/>    <!-- From 0 to 1 -->
 
     <!-- Joystick Position Reference parameters -->
@@ -25,6 +30,7 @@
 
     <!-- Topic with odometry information for the vehicle -->
     <param name="odomTopic" value="t265/odom/center_of_mass"/>
+    <!-- <param name="odomTopic" value="local_odom"/> -->
 
     <!-- Name of topic to use when handling PVA_References-->
     <param name="pvaTopic" value="px4_control/PVA_Ref"/>
@@ -37,15 +43,15 @@
     <param name="mass" value="1.45"/>       <!-- kg -->
     <param name="gz" value="9.81"/>          <!-- m/s^2 -->
     <param name="thrustRatio" value="1.54"/>  <!-- maxThrust/Weight -->
-    <param name="kpx" value="1.5"/>  <!--3.0-->
-    <param name="kpy" value="1.5"/>
-    <param name="kpz" value="1.00"/>  <!--1.9-->
-    <param name="kvx" value="2.5"/>  <!--3.7-->
-    <param name="kvy" value="2.5"/>
-    <param name="kvz" value="1.9"/>  <!--1.9-->
-    <param name="kix" value="0.04"/>
-    <param name="kiy" value="0.04"/>
-    <param name="kiz" value="0.02"/>
+    <param name="kpx" value="2.05"/>  <!--3.0-->
+    <param name="kpy" value="1.95"/>
+    <param name="kpz" value="1.25"/>  <!--1.9-->
+    <param name="kvx" value="1.9"/>  <!--3.7-->
+    <param name="kvy" value="1.95"/>
+    <param name="kvz" value="0.95"/>  <!--1.9-->
+    <param name="kix" value="0.050"/>
+    <param name="kiy" value="0.050"/>
+    <param name="kiz" value="0.035"/>
     <param name="maxInteg_x" value="1.0"/>
     <param name="maxInteg_y" value="1.0"/>
     <param name="maxInteg_z" value="3.0"/>
